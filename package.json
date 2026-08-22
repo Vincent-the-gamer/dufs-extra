@@ -3,10 +3,9 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "license": "MIT",
   "scripts": {
-    "dev": "node scripts/dev.mjs",
-    "build": "vue-tsc -b && vite build && node after-build.js",
-    "preview": "vite preview"
+    "build": "vue-tsc -b && vite build && node after-build.js"
   },
   "dependencies": {
     "jsmediatags": "^3.9.7",
