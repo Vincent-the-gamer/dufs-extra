@@ -36,27 +36,6 @@ Download `dufs-extra.zip` from release, unzip it, then
 dufs --assets dufs-extra
 ```
 
-## Requirements
-
-- dufs **≥ 0.46.0** (API details follow this version)
-- Node.js + pnpm to build the frontend
-
-## Quick start
-
-```bash
-pnpm install     # install dependencies
-pnpm build       # type-check + build + post-process (vue-tsc + vite + after-build.js)
-dufs --assets ./dist   # serve via dufs
-```
-
-The `dist/` output is a standard dufs assets directory: asset URLs in `index.html` are rewritten to the `__ASSETS_PREFIX__` placeholder, which dufs fills in at startup.
-
-Open `http://127.0.0.1:5000` (dufs default port). Add flags as needed for write operations:
-
-```bash
-dufs --assets ./dist --allow-upload --allow-delete --allow-search --allow-archive --allow-hash
-```
-
 ## Configuration
 
 Edit `window.__DUFS_MATERIAL_CONFIG__` in `dist/index.html` and redeploy:
@@ -80,6 +59,13 @@ window.__DUFS_MATERIAL_CONFIG__ = {
 
 ## Development
 
+### Requirements
+
+- dufs **≥ 0.46.0** (API details follow this version)
+- Node.js + pnpm to build the frontend
+
+
+### Debug
 ```bash
 # Build project
 pnpm run build

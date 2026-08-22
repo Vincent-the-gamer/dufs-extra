@@ -36,27 +36,6 @@
 dufs --assets dufs-extra
 ```
 
-## 环境要求
-
-- dufs **≥ 0.46.0**（API 细节以该版本为准）
-- 构建前端需要 Node.js + pnpm
-
-## 快速开始
-
-```bash
-pnpm install     # 安装依赖
-pnpm build       # 构建并改写产物（vue-tsc + vite + after-build.js）
-dufs --assets ./dist   # 交给 dufs 使用
-```
-
-构建产物 `dist/` 是标准的 dufs assets 目录：`index.html` 内资源路径已被改写为 `__ASSETS_PREFIX__` 占位符，dufs 启动时会自动注入实际前缀。
-
-启动后浏览器访问 dufs 默认端口 `http://127.0.0.1:5000`。如需上传、删除等写操作，按需给 dufs 加参数：
-
-```bash
-dufs --assets ./dist --allow-upload --allow-delete --allow-search --allow-archive --allow-hash
-```
-
 ## 配置
 
 配置项写在 `dist/index.html` 的 `window.__DUFS_MATERIAL_CONFIG__` 中，改完重新部署即可生效：
@@ -79,6 +58,13 @@ window.__DUFS_MATERIAL_CONFIG__ = {
 ```
 
 ## 开发
+
+### 环境要求
+
+- dufs **≥ 0.46.0**（API 细节以该版本为准）
+- 构建前端需要 Node.js + pnpm
+
+### 调试
 
 ```bash
 # 构建项目
