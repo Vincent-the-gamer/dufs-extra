@@ -2,9 +2,7 @@
 
 为 [dufs](https://github.com/sigoden/dufs) 打造的软萌治愈系UI设计，覆盖浏览 / 上传 / 预览 / 文件管理全链路。
 
-**English · [中文](README.zh-CN.md) **
-
-**中文 · [English](README.md)**
+中文 · [English](README.md)
 
 ---
 

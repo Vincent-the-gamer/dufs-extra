@@ -2,7 +2,7 @@
 
 A cozy custom frontend UI for [dufs](https://github.com/sigoden/dufs), covering browsing, uploading, previewing and file management.
 
-**English · [中文](README.zh-CN.md) **
+English · [中文](README.zh-CN.md) 
 
 ---
 
