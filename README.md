@@ -81,14 +81,14 @@ window.__DUFS_MATERIAL_CONFIG__ = {
 ## Development
 
 ```bash
-# Terminal 1: local dufs backend (port 5000, with auth / upload / CORS)
-dufs --path-prefix /prefix/ --auth admin:admin@/:rw --auth guest:guest@/ --enable-cors --allow-all
+# Build project
+pnpm run build
 
-# Terminal 2: Vite dev server (port 8080, proxies /prefix to local dufs)
-pnpm exec vite
+# Start a dufs instance（Port 5000，enable auth / upload / CORS）
+dufs --auth admin:admin@/:rw --auth guest:guest@/ --enable-cors --allow-all --assets dist
 ```
 
-Then open `http://127.0.0.1:8080/prefix/` to develop against upload, auth and token flows.
+Then open `http://127.0.0.1:5000` to develop against upload, auth and token flows.
 
 ## i18n
 

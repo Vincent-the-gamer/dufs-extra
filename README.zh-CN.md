@@ -81,14 +81,14 @@ window.__DUFS_MATERIAL_CONFIG__ = {
 ## 开发
 
 ```bash
-# 终端 1：起一个本地 dufs 做后端（5000 端口，含认证 / 上传 / CORS）
-dufs --path-prefix /prefix/ --auth admin:admin@/:rw --auth guest:guest@/ --enable-cors --allow-all
+# 构建项目
+pnpm run build
 
-# 终端 2：Vite 开发服务器（8080 端口，/prefix 代理到本地 dufs）
-pnpm exec vite
+# 起一个本地 dufs 做后端（5000 端口，含认证 / 上传 / CORS）
+dufs --auth admin:admin@/:rw --auth guest:guest@/ --enable-cors --allow-all --assets dist
 ```
 
-然后访问 `http://127.0.0.1:8080/prefix/` 即可联调上传、认证、token 全链路。
+然后访问 `http://127.0.0.1:5000` 即可联调上传、认证、token 全链路。
 
 ## i18n
 
