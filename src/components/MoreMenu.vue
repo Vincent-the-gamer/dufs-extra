@@ -11,7 +11,7 @@ export interface MoreItem {
     divider?: boolean;
 }
 
-defineProps<{ items: MoreItem[] }>();
+defineProps<{ items: MoreItem[]; up?: boolean }>();
 const emit = defineEmits<{ select: [id: string] }>();
 
 const open = ref(false);
@@ -55,7 +55,12 @@ function pick(id: string): void {
             <SvgIcon name="more" :size="16" />
         </button>
         <Transition name="lm-pop">
-            <div v-if="open" class="lm-menu" role="menu">
+            <div
+                v-if="open"
+                class="lm-menu"
+                :class="{ 'lm-menu--up': up }"
+                role="menu"
+            >
                 <template v-for="it in items" :key="it.id">
                     <div v-if="it.divider" class="lm-menu__divider"></div>
                     <button

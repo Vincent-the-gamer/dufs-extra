@@ -109,4 +109,5 @@ export function openEntry(e: FileEntry): void {
 
 export function closeDrawer(): void {
   state.drawerOpen = false
+  state.drawerEntry = null
 }

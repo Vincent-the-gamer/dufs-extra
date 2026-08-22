@@ -185,6 +185,7 @@ function openDir(): void {
                         <SvgIcon name="pencil" :size="15" />{{ t("edit") }}
                     </button>
                     <MoreMenu
+                        up
                         :items="acts.menuItems(entry)"
                         @select="acts.handle($event, entry)"
                     />
