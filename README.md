@@ -26,6 +26,16 @@ A cozy custom frontend UI for [dufs](https://github.com/sigoden/dufs), covering 
 - **Theme**: light / dark (system-following + manual toggle), frosted-glass design system, scroll-progress cat-paw button, typewriter motto
 - **i18n**: Chinese / English auto-detection, one-click switch in the top bar, preference persisted
 
+## Usage
+
+This repo is built for dufs **≥ 0.46.0**
+
+Download `dufs-extra.zip` from release, unzip it, then
+
+```bash
+dufs --assets dufs-extra
+```
+
 ## Requirements
 
 - dufs **≥ 0.46.0** (API details follow this version)
