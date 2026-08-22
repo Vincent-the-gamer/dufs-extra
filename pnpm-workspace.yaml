@@ -1,0 +1,4 @@
+packages:
+  - "."
+
+storeDir: /Users/estelle/Library/pnpm/store/v11

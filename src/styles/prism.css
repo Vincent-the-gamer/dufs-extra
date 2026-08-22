@@ -1,0 +1,77 @@
+/* ============ Prism 主题（lolimeow 柔和配色） ============ */
+code[class*='language-'],
+pre[class*='language-'] {
+  font-family: var(--lm-font-mono);
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--lm-c-text-primary);
+  text-shadow: none;
+  tab-size: 2;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: var(--lm-c-text-muted);
+  font-style: italic;
+}
+
+.token.punctuation {
+  color: var(--lm-c-text-secondary);
+}
+
+.token.property,
+.token.tag,
+.token.constant,
+.token.symbol,
+.token.deleted {
+  color: #f472b6;
+}
+
+.token.boolean,
+.token.number {
+  color: #f59e0b;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+  color: #34d399;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+  color: #38bdf8;
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+  color: #a78bfa;
+}
+
+.token.function,
+.token.class-name {
+  color: #60a5fa;
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+  color: #fbbf24;
+}
+
+.token.bold {
+  font-weight: 700;
+}
+
+.token.italic {
+  font-style: italic;
+}

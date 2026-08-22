@@ -1,0 +1,119 @@
+/* ============================================================
+   lolimeow 设计令牌（Design Tokens）
+   品牌色 #66CCFF，毛玻璃表面体系，圆角 4/8/12/16/∞
+   深色模式通过 html[data-theme='dark'] 切换
+   ============================================================ */
+:root {
+  /* 品牌色阶（color-mix 派生） */
+  --lm-c-brand: #66ccff;
+  --lm-c-brand-strong: color-mix(in srgb, var(--lm-c-brand) 72%, #000);
+  --lm-c-brand-subtle: color-mix(in srgb, var(--lm-c-brand) 10%, transparent);
+  --lm-c-brand-border: color-mix(in srgb, var(--lm-c-brand) 44%, #fff);
+  --lm-c-brand-soft: color-mix(in srgb, var(--lm-c-brand) 14%, #fff);
+
+  /* 文字 */
+  --lm-c-text-primary: #111111;
+  --lm-c-text-secondary: #48484a;
+  --lm-c-text-muted: #8e8e93;
+
+  /* 背景 */
+  --lm-c-bg-base: #f2f2f7;
+  --lm-c-bg-glass: rgba(249, 251, 255, 0.82);
+
+  /* 描边 / 分隔 */
+  --lm-c-border: rgba(0, 0, 0, 0.08);
+  --lm-c-border-hover: rgba(0, 0, 0, 0.12);
+  --lm-c-divider: rgba(0, 0, 0, 0.06);
+
+  /* 语义色 */
+  --lm-c-link: var(--lm-c-brand-strong);
+  --lm-c-link-hover: var(--lm-c-brand);
+  --lm-c-success: #34c759;
+  --lm-c-success-soft: #e6f9ec;
+  --lm-c-warning: #ffcc00;
+  --lm-c-warning-soft: #fff8e0;
+  --lm-c-danger: #ff3b30;
+  --lm-c-danger-soft: #ffecec;
+  --lm-c-info: color-mix(in srgb, var(--lm-c-brand) 18%, #fff);
+
+  /* 毛玻璃表面（透明度分层） */
+  --lm-surface-nav-bg: rgba(249, 251, 255, 0.76);
+  --lm-surface-panel-bg: rgba(249, 251, 255, 0.88);
+  --lm-surface-modal-bg: rgba(249, 251, 255, 0.94);
+  --lm-surface-reading-bg: rgba(249, 251, 255, 0.96);
+  --lm-blur-nav: 16px;
+  --lm-blur-panel: 12px;
+  --lm-blur-modal: 20px;
+
+  /* 阴影 */
+  --lm-shadow-glass: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --lm-shadow-elevated: 0 4px 16px rgba(15, 23, 42, 0.1);
+
+  /* 圆角 */
+  --lm-radius-xs: 4px;
+  --lm-radius-sm: 8px;
+  --lm-radius-md: 12px;
+  --lm-radius-lg: 16px;
+  --lm-radius-full: 9999px;
+
+  /* 间距 */
+  --lm-space-1: 4px;
+  --lm-space-2: 8px;
+  --lm-space-3: 12px;
+  --lm-space-4: 16px;
+  --lm-space-5: 20px;
+  --lm-space-6: 24px;
+  --lm-space-8: 32px;
+
+  /* 排版 */
+  --lm-font-base: 'Chinese Quotes', 'Inter var', Inter, ui-sans-serif, system-ui,
+    -apple-system, 'Segoe UI', Roboto, 'Noto Sans', 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  --lm-font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    'Liberation Mono', 'Courier New', monospace;
+  --lm-font-hand: 'Segoe Print', 'Bradley Hand', 'Lucida Handwriting',
+    'Comic Sans MS', cursive;
+
+  /* 动效 */
+  --lm-dur: 220ms;
+  --lm-ease: ease-out;
+
+  /* 滚动条 */
+  --lm-scrollbar-w: 0.55rem;
+
+  /* 背景图（由 JS 按 config.background 注入） */
+  --lm-bg-image: none;
+}
+
+html[data-theme='dark'] {
+  --lm-c-brand-strong: color-mix(in srgb, var(--lm-c-brand) 76%, #fff);
+  --lm-c-brand-subtle: color-mix(in srgb, var(--lm-c-brand) 18%, #050814);
+  --lm-c-brand-border: color-mix(in srgb, var(--lm-c-brand) 72%, transparent);
+  --lm-c-brand-soft: color-mix(in srgb, var(--lm-c-brand) 18%, #050814);
+
+  --lm-c-text-primary: #f9fafb;
+  --lm-c-text-secondary: #c7c7cc;
+  --lm-c-text-muted: #9696a8;
+  --lm-c-bg-base: #0b0b10;
+  --lm-c-bg-glass: rgba(5, 8, 22, 0.82);
+
+  --lm-c-border: rgba(255, 255, 255, 0.08);
+  --lm-c-border-hover: rgba(255, 255, 255, 0.15);
+  --lm-c-divider: rgba(255, 255, 255, 0.06);
+
+  --lm-c-success: #30d158;
+  --lm-c-success-soft: #0b2814;
+  --lm-c-warning: #ffd60a;
+  --lm-c-warning-soft: #2b2305;
+  --lm-c-danger: #ff453a;
+  --lm-c-danger-soft: #2a0b0b;
+  --lm-c-info: color-mix(in srgb, var(--lm-c-brand) 24%, #050814);
+
+  --lm-surface-nav-bg: rgba(5, 8, 22, 0.72);
+  --lm-surface-panel-bg: rgba(5, 8, 22, 0.86);
+  --lm-surface-modal-bg: rgba(5, 8, 22, 0.94);
+  --lm-surface-reading-bg: rgba(5, 8, 22, 0.96);
+
+  --lm-shadow-glass: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --lm-shadow-elevated: 0 4px 16px rgba(0, 0, 0, 0.5);
+}

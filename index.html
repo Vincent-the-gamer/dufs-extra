@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="color-scheme" content="light dark" />
+        <title>dufs</title>
+        <script>
+            // 开发模式专用：API 前缀（vite 代理到本地 dufs）。after-build.js 构建时会移除本脚本。
+            window.__DUFS_API_PREFIX__ = "/prefix/";
+        </script>
+        <script>
+            // 可配置项：生产环境直接修改 dist/index.html 中这段配置后重新部署
+            window.__DUFS_MATERIAL_CONFIG__ = {
+                page: { title: "dufs" },
+            };
+        </script>
+    </head>
+    <body>
+        <div id="app"></div>
+        <script type="module" src="/src/main.ts"></script>
+    </body>
+</html>

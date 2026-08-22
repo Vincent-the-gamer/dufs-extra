@@ -1,0 +1,98 @@
+/* ============ 基础样式：reset / 排版 / 滚动条 / 动效偏好 ============ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  min-height: 100svh;
+  font-family: var(--lm-font-base);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--lm-c-text-primary);
+  background: var(--lm-c-bg-base);
+  color-scheme: light;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html[data-theme='dark'] body {
+  color-scheme: dark;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: var(--lm-c-text-primary);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+a {
+  color: var(--lm-c-link);
+  text-decoration: none;
+  transition: color var(--lm-dur) var(--lm-ease);
+}
+
+a:hover {
+  color: var(--lm-c-link-hover);
+}
+
+button {
+  font-family: inherit;
+}
+
+img {
+  max-width: 100%;
+}
+
+::selection {
+  background: var(--lm-c-brand-subtle);
+}
+
+/* 品牌色胶囊滚动条 */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--lm-c-brand) 42%, var(--lm-c-border)) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: var(--lm-scrollbar-w);
+  height: var(--lm-scrollbar-w);
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--lm-c-brand) 42%, var(--lm-c-border));
+  border-radius: var(--lm-radius-full);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--lm-c-brand);
+}
+
+/* 尊重减少动效偏好 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

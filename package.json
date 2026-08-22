@@ -1,0 +1,29 @@
+{
+  "name": "dufs-extra",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "build": "vue-tsc -b && vite build && node after-build.js",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "jsmediatags": "^3.9.7",
+    "marked": "^18.0.10",
+    "marked-highlight": "^2.2.4",
+    "prismjs": "^1.30.0",
+    "vue": "^3.5.40",
+    "vue-router": "^5.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.3",
+    "@types/prismjs": "^1.26.6",
+    "@vitejs/plugin-vue": "^6.0.8",
+    "@vue/tsconfig": "^0.9.1",
+    "taze": "^21.1.0",
+    "typescript": "~6.0.2",
+    "vite": "^8.2.0",
+    "vue-tsc": "^3.3.8"
+  }
+}
