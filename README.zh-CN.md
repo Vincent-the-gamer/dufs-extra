@@ -8,6 +8,10 @@
 
 ---
 
+## 预览
+
+![preview](./preview/preview.png)
+
 ## 简介
 
 [dufs](https://github.com/sigoden/dufs) 是一个 Rust 编写的静态文件服务器。本项目为其提供一套完整的自定义网页界面。

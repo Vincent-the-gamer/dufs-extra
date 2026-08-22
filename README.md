@@ -6,6 +6,10 @@ A cozy custom frontend UI for [dufs](https://github.com/sigoden/dufs), covering 
 
 ---
 
+## Preview
+
+![preview](./preview/preview.png)
+
 ## Introduction
 
 [dufs](https://github.com/sigoden/dufs) is a static file server written in Rust. This project provides a complete custom web UI for it.
