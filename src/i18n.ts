@@ -1,4 +1,9 @@
-// 轻量 i18n：zh-CN + en 自动检测（无切换 UI）
+// 轻量 i18n：zh-CN + en 自动检测，顶栏按钮可手动切换（偏好存 localStorage）
+import { ref } from 'vue'
+
+export type Lang = 'zh' | 'en'
+
+const STORAGE_KEY = 'dufs.lang'
 
 const zh: Record<string, string> = {
   'load.failed': '加载失败',
@@ -65,6 +70,7 @@ const zh: Record<string, string> = {
   'view.card': '卡片视图',
   'view.list': '列表视图',
   'theme.toggle': '切换主题',
+  'lang.toggle': '切换语言（中 / EN）',
   'search.ph': '搜索文件…',
   clear: '清除',
   'cat.folder': '文件夹',
@@ -167,6 +173,7 @@ const en: Record<string, string> = {
   'view.card': 'Card view',
   'view.list': 'List view',
   'theme.toggle': 'Toggle theme',
+  'lang.toggle': 'Switch language (中文 / EN)',
   'search.ph': 'Search files…',
   clear: 'Clear',
   'cat.folder': 'Folder',
@@ -204,15 +211,34 @@ const en: Record<string, string> = {
   'open.new': 'Open in new tab',
 }
 
-export type Lang = 'zh' | 'en'
+const dicts: Record<Lang, Record<string, string>> = { zh, en }
 
-export const lang: Lang = (navigator.language || '').toLowerCase().startsWith('zh') ? 'zh' : 'en'
-const dict = lang === 'zh' ? zh : en
+function detect(): Lang {
+  const saved = localStorage.getItem(STORAGE_KEY)
+  if (saved === 'zh' || saved === 'en') return saved
+  return (navigator.language || '').toLowerCase().startsWith('zh') ? 'zh' : 'en'
+}
+
+/** 当前语言（响应式，切换后所有引用处自动刷新） */
+export const lang = ref<Lang>(detect())
+
+function apply(): void {
+  document.documentElement.lang = lang.value === 'zh' ? 'zh-CN' : 'en'
+}
 
 export function t(key: string, vars?: Record<string, string | number>): string {
-  let s = dict[key] ?? en[key] ?? key
+  let s = dicts[lang.value][key] ?? en[key] ?? key
   if (vars) {
     for (const [k, v] of Object.entries(vars)) s = s.replaceAll(`{${k}}`, String(v))
   }
   return s
 }
+
+/** 手动切换语言（顶栏按钮），偏好持久化到 localStorage */
+export function setLang(l: Lang): void {
+  lang.value = l
+  localStorage.setItem(STORAGE_KEY, l)
+  apply()
+}
+
+apply()

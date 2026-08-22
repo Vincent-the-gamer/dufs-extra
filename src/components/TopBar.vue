@@ -10,7 +10,7 @@ import {
     putText,
 } from "../api/client";
 import { prefix, refresh, setView, state } from "../store";
-import { t } from "../i18n";
+import { lang, setLang, t } from "../i18n";
 import { themeMode, toggleTheme } from "../composables/useTheme";
 import { editDialog, promptDialog } from "../composables/useDialog";
 import { toastE, toastS } from "../composables/useToast";
@@ -157,6 +157,15 @@ async function newFile(): Promise<void> {
                         <SvgIcon name="list" :size="16" />
                     </button>
                 </div>
+
+                <button
+                    class="lm-btn lm-btn--icon lm-lang-btn"
+                    :title="t('lang.toggle')"
+                    aria-label="language"
+                    @click="setLang(lang === 'zh' ? 'en' : 'zh')"
+                >
+                    <span>{{ lang === "zh" ? "EN" : "中" }}</span>
+                </button>
 
                 <button
                     class="lm-btn lm-btn--icon"

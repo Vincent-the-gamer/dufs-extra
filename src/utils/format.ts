@@ -19,7 +19,7 @@ export function formatDate(ms: number): string {
   if (!ms) return '—'
   const d = new Date(ms)
   const now = new Date()
-  const locale = lang === 'zh' ? 'zh-CN' : 'en-US'
+  const locale = lang.value === 'zh' ? 'zh-CN' : 'en-US'
   const time = d.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' })
   if (d.toDateString() === now.toDateString()) return time
   const date = d.toLocaleDateString(locale, {

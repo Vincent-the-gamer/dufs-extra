@@ -1,5 +1,5 @@
 // 上传队列：并发信号量 + 逐文件进度 + 文件夹递归采集
-import { computed, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { buildUrl, joinPath, upload } from '../api/client'
 import { UPLOAD_CONCURRENCY } from '../config'
 
@@ -35,14 +35,16 @@ export function useUpload(getPrefix: () => string, getDir: () => string, onSettl
     const dir = getDir()
     for (const s of sources) {
       const path = joinPath(dir, s.rel)
-      const item: UploadItem = {
+      // 必须 reactive 包装后再入队：queue 闭包持有同一代理，
+      // 直接改裸对象会绕过 Proxy 的 set 陷阱，进度/状态无法触发渲染
+      const item = reactive<UploadItem>({
         id: ++uid,
         name: s.rel || s.file.name,
         url: buildUrl(prefix, path),
         size: s.file.size,
         progress: 0,
         status: 'pending',
-      }
+      })
       items.value.push(item)
       queue.push({ item, file: s.file })
     }
