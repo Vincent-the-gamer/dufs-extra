@@ -76,3 +76,19 @@ export function dirname(path: string): string {
   parts.pop()
   return '/' + parts.join('/')
 }
+
+// URL 编码的路径还原为可读形式（decodeURIComponent 失败时原样返回）
+export function decodePath(p: string): string {
+  try {
+    return decodeURIComponent(p)
+  } catch {
+    return p
+  }
+}
+
+// 内部路径统一规范形：解码 + 去首尾斜杠（根路径保持 '/'）。
+// 约定：state.path 等内部路径一律为解码后的可读路径，buildUrl 负责唯一一次 URL 编码
+export function normalizePath(p: string): string {
+  const s = decodePath(p).replace(/^\/+|\/+$/g, '')
+  return s ? '/' + s : '/'
+}

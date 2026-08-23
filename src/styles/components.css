@@ -713,12 +713,97 @@
 /* ---------- 分页 ---------- */
 .lm-pagination {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    gap: 10px;
     padding: 20px 0 4px;
     font-size: 13px;
+    color: var(--lm-c-text-secondary);
+}
+
+.lm-pagination__count {
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+}
+
+.lm-pagination__pages {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.lm-pagination__page {
+    min-width: 30px;
+    height: 30px;
+    padding: 0 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: var(--lm-radius-full);
+    background: transparent;
+    color: var(--lm-c-text-secondary);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    cursor: pointer;
+    transition: all var(--lm-dur) var(--lm-ease);
+}
+
+.lm-pagination__page:hover {
+    background: var(--lm-c-brand-soft);
+    color: var(--lm-c-brand-strong);
+}
+
+.lm-pagination__page.is-active {
+    background: var(--lm-c-brand);
+    color: var(--lm-c-bg-base);
+    cursor: default;
+}
+
+.lm-pagination__page.is-ellipsis {
+    cursor: default;
     color: var(--lm-c-text-muted);
+    font-weight: 400;
+}
+
+.lm-pagination__size {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+.lm-select {
+    appearance: none;
+    -webkit-appearance: none;
+    border: 1px solid var(--lm-c-border);
+    border-radius: var(--lm-radius-full);
+    background-color: transparent;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='m1 1 4 4 4-4' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    color: var(--lm-c-text-secondary);
+    padding: 5px 24px 5px 12px;
+    font: inherit;
+    font-size: 12.5px;
+    cursor: pointer;
+    transition:
+        border-color var(--lm-dur) var(--lm-ease),
+        color var(--lm-dur) var(--lm-ease);
+}
+
+.lm-select:hover {
+    border-color: var(--lm-c-brand-border);
+    color: var(--lm-c-text-primary);
+}
+
+.lm-select:focus-visible {
+    outline: none;
+    border-color: var(--lm-c-brand);
 }
 
 /* ---------- 进度条 ---------- */

@@ -98,6 +98,7 @@ export const icons: Record<string, IconDef> = {
   x: [l(18, 6, 6, 18), l(6, 6, 18, 18)],
   check: [poly('20 6 9 17 4 12')],
   chevronRight: [poly('9 18 15 12 9 6')],
+  chevronLeft: [poly('15 18 9 12 15 6')],
   chevronDown: [poly('6 9 12 15 18 9')],
   refresh: [p('M21 12a9 9 0 1 1-2.64-6.36L21 8'), poly('21 3 21 8 16 8')],
   login: [p('M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4'), poly('10 17 15 12 10 7'), l(15, 12, 3, 12)],
