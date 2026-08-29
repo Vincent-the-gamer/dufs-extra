@@ -1,7 +1,7 @@
 // 全局轻量状态（无 Pinia，模块级 reactive）
 import { computed, reactive } from 'vue'
 import type { FileEntry, IndexData } from './api/types'
-import { fetchIndex } from './api/client'
+import { fetchIndex, joinPath } from './api/client'
 import { config, BOOT_DATA, DEV_API_PREFIX } from './config'
 import { naturalCompare, normalizePath } from './utils/format'
 import { getEntryInfo } from './utils/filetype'
@@ -93,14 +93,22 @@ export const readmeEntry = computed(() =>
   entries.value.find((e) => !e.isDir && /^readme(\.md|\.markdown)?$/i.test(e.name)),
 )
 
-export async function load(path: string, opts?: { search?: string }): Promise<void> {
+export async function load(path: string, opts?: { search?: string; keepPage?: boolean }): Promise<void> {
   state.loading = true
   state.error = ''
   state.path = normalizePath(path)
   try {
     const data = await fetchIndex(prefix.value, state.path, { q: opts?.search ?? state.search })
     state.data = data
-    state.page = 1
+    if (opts?.keepPage) {
+      // 上传/重命名/删除/编辑等刷新后维持原页码；条目减少导致页数收缩时收敛到最后一页
+      const n = data.paths?.length ?? 0
+      const total = state.pageSize > 0 ? Math.max(1, Math.ceil(n / state.pageSize)) : 1
+      state.page = Math.min(Math.max(1, state.page), total)
+    } else {
+      state.page = 1
+    }
+    syncDrawerEntry(data)
   } catch (e) {
     const status = (e as { status?: number })?.status
     state.error = status === 401 ? 'auth' : String((e as Error)?.message ?? e)
@@ -110,7 +118,21 @@ export async function load(path: string, opts?: { search?: string }): Promise<vo
 }
 
 export function refresh(): Promise<void> {
-  return load(state.path, { search: state.search })
+  return load(state.path, { search: state.search, keepPage: true })
+}
+
+// 数据刷新后同步详情抽屉中的条目：
+// - 条目仍在 → 用新数据替换（mtime/size 更新，预览组件随 key 重建重新加载）
+// - 条目已不存在（删除/重命名/移动/目录切换）且未在搜索 → 关闭抽屉
+function syncDrawerEntry(data: IndexData): void {
+  const cur = state.drawerEntry
+  if (!cur) return
+  const fresh = (data.paths ?? []).find((it) => joinPath(state.path, it.name) === cur.path)
+  if (fresh) {
+    state.drawerEntry = getEntryInfo(fresh, prefix.value, state.path)
+  } else if (!state.search) {
+    closeDrawer()
+  }
 }
 
 export function setView(v: ViewMode): void {

@@ -96,7 +96,10 @@ function openDir(): void {
 
                 <div class="lm-drawer__body">
                     <div v-if="!entry.isDir" class="lm-drawer__preview">
-                        <PreviewPanel :key="entry.path" :entry="entry" />
+                        <PreviewPanel
+                            :key="`${entry.path}:${entry.mtime}:${entry.size}`"
+                            :entry="entry"
+                        />
                     </div>
 
                     <dl class="lm-kv">
