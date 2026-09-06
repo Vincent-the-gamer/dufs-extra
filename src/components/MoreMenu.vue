@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { t } from "../i18n";
 import SvgIcon from "./SvgIcon.vue";
 
@@ -14,38 +14,51 @@ export interface MoreItem {
 defineProps<{ items: MoreItem[]; up?: boolean }>();
 const emit = defineEmits<{ select: [id: string] }>();
 
-const open = ref(false);
+// 共享的活动菜单 id：同一时刻全局只允许一个「⋯」菜单展开，
+// 打开新的会先关闭上一个（无论菜单在表格行、卡片还是抽屉里）
+const activeId = ref<string | null>(null);
+let seq = 0;
+const uid = `lm-more-${++seq}`;
 
-function toggle(): void {
-    open.value = !open.value;
+const rootEl = ref<HTMLElement | null>(null);
+const open = computed(() => activeId.value === uid);
+
+function setOpen(v: boolean): void {
+    activeId.value = v ? uid : null;
 }
 
+function toggle(): void {
+    setOpen(!open.value);
+}
+
+// 用捕获阶段监听，保证即便其他控件 @click.stop 也能关掉已展开的菜单
 function onDocClick(e: MouseEvent): void {
-    if (open.value && !(e.target as HTMLElement).closest(".lm-more"))
-        open.value = false;
+    if (open.value && rootEl.value && !rootEl.value.contains(e.target as Node))
+        setOpen(false);
 }
 
 function onKey(e: KeyboardEvent): void {
-    if (e.key === "Escape") open.value = false;
+    if (e.key === "Escape" && open.value) setOpen(false);
 }
 
 onMounted(() => {
-    document.addEventListener("click", onDocClick);
+    document.addEventListener("click", onDocClick, true);
     document.addEventListener("keydown", onKey);
 });
 onBeforeUnmount(() => {
-    document.removeEventListener("click", onDocClick);
+    document.removeEventListener("click", onDocClick, true);
     document.removeEventListener("keydown", onKey);
+    if (open.value) setOpen(false);
 });
 
 function pick(id: string): void {
-    open.value = false;
+    setOpen(false);
     emit("select", id);
 }
 </script>
 
 <template>
-    <div class="lm-more">
+    <div ref="rootEl" class="lm-more">
         <button
             class="lm-btn lm-btn--icon lm-btn--sm"
             :title="t('more')"

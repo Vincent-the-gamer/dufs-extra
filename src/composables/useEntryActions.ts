@@ -21,13 +21,20 @@ export function useEntryActions() {
 
   const absUrl = (e: FileEntry) => window.location.origin + e.url
 
+  // 点击文件名/行/卡片：目录进入，文件则打开文件本身（新标签页）。
+  // dufs 对文件 GET 返回原内容，浏览器会按类型展示或下载，应用页保留在原标签。
   function open(e: FileEntry): void {
     if (e.isDir) {
       closeDrawerGuard(e)
       router.push(e.path)
     } else {
-      openEntry(e)
+      window.open(e.url, '_blank', 'noopener')
     }
+  }
+
+  // 仅打开预览抽屉（需显式点击「预览」图标/菜单项才触发）
+  function preview(e: FileEntry): void {
+    if (!e.isDir) openEntry(e)
   }
 
   function closeDrawerGuard(e: FileEntry): void {
@@ -155,7 +162,8 @@ export function useEntryActions() {
       items.push({ id: 'open', icon: 'folderOpen', label: t('open') })
       if (canArchive) items.push({ id: 'zip', icon: 'archive', label: t('zip') })
     } else {
-      items.push({ id: 'open', icon: 'eye', label: t('preview') })
+      items.push({ id: 'preview', icon: 'eye', label: t('preview') })
+      items.push({ id: 'open', icon: 'external', label: t('open.new') })
       items.push({ id: 'download', icon: 'download', label: t('download') })
     }
     items.push({ divider: true, id: 'd1' })
@@ -180,6 +188,9 @@ export function useEntryActions() {
     switch (id) {
       case 'open':
         open(e)
+        break
+      case 'preview':
+        preview(e)
         break
       case 'download':
       case 'zip':
@@ -206,5 +217,5 @@ export function useEntryActions() {
     }
   }
 
-  return { open, download, copyLink, copyToken, rename, moveTo, removeEntry, edit, menuItems, handle }
+  return { open, preview, download, copyLink, copyToken, rename, moveTo, removeEntry, edit, menuItems, handle }
 }

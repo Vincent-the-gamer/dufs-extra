@@ -14,10 +14,10 @@
     "marked-highlight": "^2.2.4",
     "prismjs": "^1.30.0",
     "vue": "^3.5.42",
-    "vue-router": "^5.3.0"
+    "vue-router": "^5.3.1"
   },
   "devDependencies": {
-    "@types/node": "^26.4.0",
+    "@types/node": "^26.4.1",
     "@types/prismjs": "^1.26.6",
     "@vitejs/plugin-vue": "^6.0.8",
     "@vue/tsconfig": "^0.9.1",
