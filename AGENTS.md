@@ -31,24 +31,26 @@
 
 - **目录列表 JSON**：请求带 `?json` query 参数（不是 Accept 头）。返回 `IndexData`：
 
-  | 字段 | 类型 | 说明 |
-  |---|---|---|
-  | `href` | string | 当前目录路径 |
-  | `kind` | `"Index"` \| `"Edit"` \| `"View"` | 数据种类 |
-  | `uri_prefix` | string | 路径前缀 |
-  | `allow_upload` / `allow_delete` / `allow_search` / `allow_archive` | bool | 权限开关 |
-  | `dir_exists` | bool | 目录是否存在 |
-  | `auth` | bool | 是否配置了账号体系 |
-  | `user` | string \| null | 当前登录用户名 |
-  | `paths` | array | 见下 |
+  | 字段                                                               | 类型                              | 说明               |
+  | ------------------------------------------------------------------ | --------------------------------- | ------------------ |
+  | `href`                                                             | string                            | 当前目录路径       |
+  | `kind`                                                             | `"Index"` \| `"Edit"` \| `"View"` | 数据种类           |
+  | `uri_prefix`                                                       | string                            | 路径前缀           |
+  | `allow_upload` / `allow_delete` / `allow_search` / `allow_archive` | bool                              | 权限开关           |
+  | `dir_exists`                                                       | bool                              | 目录是否存在       |
+  | `auth`                                                             | bool                              | 是否配置了账号体系 |
+  | `user`                                                             | string \| null                    | 当前登录用户名     |
+  | `paths`                                                            | array                             | 见下               |
 
   `paths` 元素 `PathItem` **只有 4 个字段**：
+
   ```json
   { "path_type": "Dir" | "SymlinkDir" | "File" | "SymlinkFile",
     "name": "文件名",
     "mtime": 1710000000000,   // 毫秒时间戳
     "size": 12345 }
   ```
+
   ⚠️ **没有 `content_type`、`etag`、`is_dir`**——类型由 `path_type` 推断，详情面板的字段要靠前端按扩展名推断。
 
 - 其他列表参数：`?simple`（纯名字列表）、`?sort=name|mtime|size&order=desc`（服务端排序）、`?q=<关键词>`（搜索，需 `--allow-search`，结果同 `IndexData`）。
@@ -107,7 +109,7 @@
 
 - 展示字段：名称、类型图标（扩展名推断）、大小（人性化格式）、修改时间、完整路径、预览区、下载按钮、复制链接按钮。
 - sha256：检测到 `--allow-hash`（请求 `?hash` 成功）才显示，否则隐藏。
-- 预览与详情同屏（抽屉内），预览类型同 3.2 预览清单。
+- 预览与详情同屏（抽屉内）；**例外**：`.doc/.docx/.xls/.xlsx` 宽表格/整页文档走全屏预览层（见 3.5）。预览类型同 3.5 预览清单。
 
 ### 3.4 复制链接
 
@@ -115,8 +117,12 @@
 
 ### 3.5 预览清单
 
-- 离线可行、**全做**：图片（懒加载原图）、视频（`preload="metadata"` 取首帧）、音频、PDF、文本/代码（prism 高亮 + marked 渲染 Markdown）、字幕（subsrt 转 WebVTT）、音频元数据（jsmediatags）、字体查看器。
-- 依赖外部服务、**默认关闭的配置开关**（沿用 material-assets 的 `externalViewer`、`jxlPolyfill` 机制）：微软 Office 在线预览、draw.io、jxl 解码 + Photopea。
+- 离线可行、**全做**：图片（懒加载原图）、视频（`preload="metadata"` 取首帧）、音频、PDF、文本/代码（prism 高亮 + marked 渲染 Markdown）、字幕（转 WebVTT）、音频元数据（jsmediatags）、字体查看器。
+- **Excel / Word 离线本地渲染（已实现，无需外网；解析库随预览按需动态 `import()`，不进首包）**：
+  - `.xlsx` / `.xls` → SheetJS（npm `xlsx`）：整表载入内存解析，逐工作表渲染为 HTML 表格分节展示；安全上限 100 MB（`MAX_OFFICE_BYTES`），表格超 2000 行 × 128 列截断（含裁掉越界合并单元格）并提示“已截断”。
+  - `.docx` → docx-preview：按文档排版渲染；旧版二进制 `.doc` 无纯前端渲染方案，不在本地范围。
+  - 触发方式：`.doc/.docx/.xls/.xlsx` 这类宽表格/整页文档放不进右侧抽屉，点击预览进**全屏预览层**（docx 限宽居中、表格类铺满宽度，见 3.3）；其余类型仍在抽屉内预览。
+- 依赖外部服务、**默认关闭的配置开关**（沿用 material-assets 的 `externalViewer`、`jxlPolyfill` 机制）：**无本地渲染方案的 Office 格式**（.doc、PPT/PPTX、ODT 等）走微软 Office 在线预览、draw.io、jxl 解码 + Photopea。
 - 文本预览注意：dufs 对文件 GET 返回原内容，直接 fetch 即可。
 
 ### 3.6 主题（lolimeow 设计令牌）
@@ -138,7 +144,7 @@
 
 ### 3.8 i18n
 
-- **zh-CN + en 自动检测**（`navigator.language`，zh 给中文、其他给英文），无语言切换 UI（与 material-assets 一致，它做 5 语言）。
+- **zh-CN + en**：`navigator.language` 自动检测（zh 给中文、其他给英文），顶栏「中 / EN」按钮可手动切换，偏好存 localStorage（`dufs.lang`）。
 
 ### 3.9 开发体验
 

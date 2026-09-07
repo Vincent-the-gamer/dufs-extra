@@ -1536,6 +1536,102 @@
     }
 }
 
+/* ---------- 全屏预览（.doc/.docx/.xls/.xlsx） ---------- */
+.lm-full-root {
+    position: fixed;
+    inset: 0;
+    z-index: 64;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(8px, 2.4vh, 26px);
+}
+
+.lm-full-mask {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.lm-full {
+    position: relative;
+    width: 100%;
+    max-width: 1720px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: var(--lm-radius-lg);
+}
+
+.lm-full__head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--lm-c-divider);
+    flex-shrink: 0;
+}
+
+.lm-full__title {
+    font-size: 15px;
+    font-weight: 800;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.lm-full__actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.lm-full__body {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+    padding: 18px 20px 24px;
+}
+
+/* 整页阅读型（doc/docx）：限宽居中，避免被拉得过宽 */
+.lm-full__body--page .lm-preview {
+    width: 100%;
+    max-width: 980px;
+    margin: 0 auto;
+}
+
+/* 全屏下解除抽屉尺寸限制，让预览内容尽量铺满可视区 */
+.lm-full .lm-preview__img,
+.lm-full .lm-preview__text,
+.lm-full .lm-office__table,
+.lm-full .lm-office__docx {
+    max-height: none;
+}
+
+.lm-full .lm-preview__frame {
+    height: calc(100dvh - 150px);
+}
+
+/* 全屏读表：字号/单元格内边距略微放大 */
+.lm-full .lm-office table {
+    font-size: 13.5px;
+}
+
+.lm-full .lm-office table td {
+    padding: 5px 12px;
+}
+
+/* docx 解析期容器暂无内容，给出占位高度以免加载态不可见 */
+.lm-full .lm-office__docx.lm-office--busy {
+    min-height: 360px;
+}
+
 /* ---------- 通用工具类 ---------- */
 .lm-muted {
     color: var(--lm-c-text-muted);

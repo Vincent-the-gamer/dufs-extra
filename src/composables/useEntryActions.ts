@@ -2,9 +2,10 @@
 import { useRouter } from 'vue-router'
 import type { FileEntry } from '../api/types'
 import { buildUrl, genToken, getText, joinPath, move, putText, remove } from '../api/client'
-import { state, refresh, openEntry, prefix } from '../store'
+import { state, refresh, openEntry, openFull, prefix } from '../store'
 import { t } from '../i18n'
 import { copyText, dirname, tokenExpiryMs } from '../utils/format'
+import { usesFullscreenPreview } from '../utils/filetype'
 import { confirmDialog, editDialog, promptDialog } from './useDialog'
 import { toastE, toastS } from './useToast'
 
@@ -32,9 +33,12 @@ export function useEntryActions() {
     }
   }
 
-  // 仅打开预览抽屉（需显式点击「预览」图标/菜单项才触发）
+  // 预览入口：Office 宽表格/整页文档（doc/docx/xls/xlsx）→ 全屏预览；
+  // 其余类型 → 右侧详情抽屉（需显式点击「预览」图标/菜单项才触发）
   function preview(e: FileEntry): void {
-    if (!e.isDir) openEntry(e)
+    if (e.isDir) return
+    if (usesFullscreenPreview(e)) openFull(e)
+    else openEntry(e)
   }
 
   function closeDrawerGuard(e: FileEntry): void {

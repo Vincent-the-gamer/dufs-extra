@@ -5,6 +5,7 @@ import { applyTheme } from "./composables/useTheme";
 import { renderMarkdown } from "./utils/highlight";
 import TopBar from "./components/TopBar.vue";
 import DetailDrawer from "./components/DetailDrawer.vue";
+import FullscreenPreview from "./components/FullscreenPreview.vue";
 import UploadOverlay from "./components/UploadOverlay.vue";
 import ToastHost from "./components/ToastHost.vue";
 import DialogHost from "./components/DialogHost.vue";
@@ -43,6 +44,7 @@ onMounted(() => {
         </footer>
 
         <DetailDrawer />
+        <FullscreenPreview />
         <UploadOverlay ref="overlay" />
         <ToastHost />
         <DialogHost />

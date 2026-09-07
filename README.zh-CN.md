@@ -21,7 +21,7 @@
 - **文件操作**：重命名、移动、删除（确认框）、文本在线编辑、zip 打包下载
 - **详情抽屉**：点击文件/卡片右侧滑出，展示名称、类型、大小、修改时间、路径、SHA-256（检测到 `--allow-hash` 时）、预览区、下载与复制链接
 - **复制链接**：普通链接 + 带 token 的分享链接（`?tokengen` → `?token=`，3 天有效）
-- **预览**：图片、视频、音频、PDF、文本/代码（Prism 高亮）、Markdown、字幕（转 WebVTT）、音频元数据、字体查看器；Office / draw.io / JXL 等外部预览为可选开关
+- **预览**：图片、视频、音频、PDF、文本/代码（Prism 高亮）、Markdown、字幕（转 WebVTT）、音频元数据、字体查看器；新增 **Excel / Word 离线本地预览** —— `.xls/.xlsx` 用 SheetJS 逐工作表渲染为 HTML 表格、`.docx` 用 docx-preview 还原文档排版，解析库按需加载、无需外网。`.doc/.docx/.xls/.xlsx` 打开时进入**全屏预览层**（宽表格 / 整页文档在右侧抽屉放不下；表格超过 2000 行 × 128 列会截断并提示，超 100MB 提示改下载）。其余旧版 Office 格式（.doc、PPT 等）与 draw.io 仍需 `externalViewer` 开关走在线预览，JXL 解码 + Photopea 走 `jxlPolyfill` 开关
 - **认证**：顶栏登录/登出（浏览器原生弹窗，CHECKAUTH / LOGOUT）
 - **主题**：深浅模式（跟随系统 + 手动切换）、毛玻璃设计系统、滚动进度猫爪按钮、打字机一言
 - **i18n**：中 / 英文自动检测，顶栏按钮一键切换，偏好持久化
@@ -47,14 +47,14 @@ window.__DUFS_MATERIAL_CONFIG__ = {
   background: { light: "/bg-light.png", dark: "/bg-dark.png" },
   theme: { light: "#66CCFF", dark: "#66CCFF" },
   glassmorphism: { appbar: true, filelist: true, readme: true, preview: true },
-  limit: 50,            // 分页，0/缺省为不分页
-  externalViewer: true, // Office / draw.io 等在线预览开关
-  jxlPolyfill: true,    // JXL 解码 + Photopea 开关
-  preferPreview: true,  // 打开文件时优先预览而非下载
-  decorations: true,    // 猫爪按钮 / 打字机一言装饰
+  limit: 50, // 分页，0/缺省为不分页
+  externalViewer: true, // 旧版 Office（.doc、PPT 等）/ draw.io 在线预览开关 —— .xls/.xlsx/.docx 已内置离线预览
+  jxlPolyfill: true, // JXL 解码 + Photopea 开关
+  preferPreview: true, // 打开文件时优先预览而非下载
+  decorations: true, // 猫爪按钮 / 打字机一言装饰
   codeHighlightMaxLines: 1000,
   codeHighlightMaxLineLength: 500,
-}
+};
 ```
 
 ## 开发

@@ -46,6 +46,8 @@ export const state = reactive({
   pageSize: initialPageSize(),
   drawerOpen: false,
   drawerEntry: null as FileEntry | null,
+  fullOpen: false,
+  fullEntry: null as FileEntry | null,
 })
 
 export const prefix = computed(() => state.data?.uri_prefix || BOOT_DATA?.uri_prefix || DEV_API_PREFIX)
@@ -108,7 +110,7 @@ export async function load(path: string, opts?: { search?: string; keepPage?: bo
     } else {
       state.page = 1
     }
-    syncDrawerEntry(data)
+    syncOverlays(data)
   } catch (e) {
     const status = (e as { status?: number })?.status
     state.error = status === 401 ? 'auth' : String((e as Error)?.message ?? e)
@@ -121,18 +123,18 @@ export function refresh(): Promise<void> {
   return load(state.path, { search: state.search, keepPage: true })
 }
 
-// 数据刷新后同步详情抽屉中的条目：
+// 数据刷新后同步覆盖层（详情抽屉 + 全屏预览）中的条目：
 // - 条目仍在 → 用新数据替换（mtime/size 更新，预览组件随 key 重建重新加载）
-// - 条目已不存在（删除/重命名/移动/目录切换）且未在搜索 → 关闭抽屉
-function syncDrawerEntry(data: IndexData): void {
-  const cur = state.drawerEntry
-  if (!cur) return
-  const fresh = (data.paths ?? []).find((it) => joinPath(state.path, it.name) === cur.path)
-  if (fresh) {
-    state.drawerEntry = getEntryInfo(fresh, prefix.value, state.path)
-  } else if (!state.search) {
-    closeDrawer()
+// - 条目已不存在（删除/重命名/移动/目录切换）且未在搜索 → 关闭对应覆盖层
+function syncOverlays(data: IndexData): void {
+  const sync = (cur: FileEntry | null, assign: (e: FileEntry) => void, drop: () => void): void => {
+    if (!cur) return
+    const fresh = (data.paths ?? []).find((it) => joinPath(state.path, it.name) === cur.path)
+    if (fresh) assign(getEntryInfo(fresh, prefix.value, state.path))
+    else if (!state.search) drop()
   }
+  sync(state.drawerEntry, (e) => (state.drawerEntry = e), closeDrawer)
+  sync(state.fullEntry, (e) => (state.fullEntry = e), closeFull)
 }
 
 export function setView(v: ViewMode): void {
@@ -150,6 +152,7 @@ export function setSort(k: SortKey): void {
 }
 
 export function openEntry(e: FileEntry): void {
+  closeFull()
   state.drawerOpen = true
   state.drawerEntry = e
 }
@@ -157,4 +160,17 @@ export function openEntry(e: FileEntry): void {
 export function closeDrawer(): void {
   state.drawerOpen = false
   state.drawerEntry = null
+}
+
+// Office（doc/docx/xls/xlsx）走全屏预览；打开时收拢详情抽屉，
+// 与 openEntry 通过各自 close 保持互斥
+export function openFull(e: FileEntry): void {
+  closeDrawer()
+  state.fullOpen = true
+  state.fullEntry = e
+}
+
+export function closeFull(): void {
+  state.fullOpen = false
+  state.fullEntry = null
 }

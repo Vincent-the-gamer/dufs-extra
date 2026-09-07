@@ -2,7 +2,7 @@
 
 A cozy custom frontend UI for [dufs](https://github.com/sigoden/dufs), covering browsing, uploading, previewing and file management.
 
-English · [中文](README.zh-CN.md) 
+English · [中文](README.zh-CN.md)
 
 ---
 
@@ -21,7 +21,7 @@ English · [中文](README.zh-CN.md)
 - **File operations**: rename, move, delete (with confirmation), online text editing, ZIP download
 - **Detail drawer**: slides in from the right on file/card click — name, type, size, modified time, path, SHA-256 (shown when `--allow-hash` is on), preview area, download and copy-link buttons
 - **Copy links**: plain link + shareable token link (`?tokengen` → `?token=`, valid for 3 days)
-- **Preview**: images, video, audio, PDF, text/code (Prism), Markdown, subtitles (converted to WebVTT), audio metadata, font viewer; Office / draw.io / JXL are optional toggles
+- **Preview**: images, video, audio, PDF, text/code (Prism), Markdown, subtitles (converted to WebVTT), audio metadata, font viewer; **Excel & Word rendered offline in the browser** — `.xls/.xlsx` via SheetJS (each worksheet as an HTML table) and `.docx` via docx-preview (layout preserved), both parsed on demand with no internet access. `.doc/.docx/.xls/.xlsx` open in a fullscreen layer, since wide tables / full-page documents don't fit in the side drawer (spreadsheets cap at 2000 rows × 128 cols with a truncation notice; files over 100 MB prompt you to download). Other legacy Office formats (.doc, PPT…) and draw.io remain opt-in via `externalViewer`, JXL decoding + Photopea via `jxlPolyfill`
 - **Auth**: sign in / out in the top bar (native browser dialog, CHECKAUTH / LOGOUT)
 - **Theme**: light / dark (system-following + manual toggle), frosted-glass design system, scroll-progress cat-paw button, typewriter motto
 - **i18n**: Chinese / English auto-detection, one-click switch in the top bar, preference persisted
@@ -47,14 +47,14 @@ window.__DUFS_MATERIAL_CONFIG__ = {
   background: { light: "/bg-light.png", dark: "/bg-dark.png" },
   theme: { light: "#66CCFF", dark: "#66CCFF" },
   glassmorphism: { appbar: true, filelist: true, readme: true, preview: true },
-  limit: 50,            // pagination; 0/absent = no pagination
-  externalViewer: true, // Office / draw.io online previews
-  jxlPolyfill: true,    // JXL decoding + Photopea
-  preferPreview: true,  // prefer preview over download when opening files
-  decorations: true,    // cat-paw button / typewriter motto
+  limit: 50, // pagination; 0/absent = no pagination
+  externalViewer: true, // online previews for legacy Office (.doc, PPT…) & draw.io — .xls/.xlsx/.docx already preview locally
+  jxlPolyfill: true, // JXL decoding + Photopea
+  preferPreview: true, // prefer preview over download when opening files
+  decorations: true, // cat-paw button / typewriter motto
   codeHighlightMaxLines: 1000,
   codeHighlightMaxLineLength: 500,
-}
+};
 ```
 
 ## Development
@@ -64,8 +64,8 @@ window.__DUFS_MATERIAL_CONFIG__ = {
 - dufs **≥ 0.46.0** (API details follow this version)
 - Node.js + pnpm to build the frontend
 
-
 ### Debug
+
 ```bash
 # Build project
 pnpm run build
