@@ -46,5 +46,7 @@ export function glass(key: keyof NonNullable<DufsConfig['glassmorphism']>): bool
 
 // 文本预览/编辑的安全上限
 export const MAX_PREVIEW_BYTES = 5 * 1024 * 1024
+// Office 离线解析预览的安全上限（xls/xlsx/docx 需整体载入内存解析）
+export const MAX_OFFICE_BYTES = 100 * 1024 * 1024
 export const MAX_AUDIO_META_BYTES = 100 * 1024 * 1024
 export const UPLOAD_CONCURRENCY = 5

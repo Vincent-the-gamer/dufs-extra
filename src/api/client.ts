@@ -48,6 +48,11 @@ export function getText(url: string): Promise<string> {
   return request(url).then((r) => r.text())
 }
 
+// 二进制内容（Office 本地解析等）
+export function getBuffer(url: string): Promise<ArrayBuffer> {
+  return request(url).then((r) => r.arrayBuffer())
+}
+
 export function putText(url: string, text: string): Promise<Response> {
   return request(url, { method: 'PUT', body: text })
 }

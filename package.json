@@ -1,7 +1,7 @@
 {
   "name": "dufs-extra",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "license": "MIT",
   "scripts": {
@@ -9,12 +9,15 @@
     "dep": "taze major -I"
   },
   "dependencies": {
+    "docx-preview": "^0.4.0",
     "jsmediatags": "^3.9.7",
     "marked": "^18.0.11",
     "marked-highlight": "^2.2.4",
     "prismjs": "^1.30.0",
     "vue": "^3.5.42",
-    "vue-router": "^5.3.1"
+    "vue-router": "^5.3.1",
+    "word-extractor": "^1.0.4",
+    "xlsx": "0.18.5"
   },
   "devDependencies": {
     "@types/node": "^26.4.1",

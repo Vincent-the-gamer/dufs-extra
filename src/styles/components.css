@@ -1160,6 +1160,79 @@
     margin-bottom: 12px;
 }
 
+/* ---------- Office 离线预览（xls/xlsx 表格、docx 排版） ---------- */
+.lm-office {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.lm-office__sheet-name {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--lm-c-text-muted);
+    margin: 2px 0 6px;
+}
+
+.lm-office__table {
+    overflow: auto;
+    max-height: 340px;
+    border: 1px solid var(--lm-c-border);
+    border-radius: var(--lm-radius-sm);
+    background: var(--lm-surface-reading-bg);
+}
+
+.lm-office table {
+    border-collapse: collapse;
+    font-size: 12.5px;
+    color: var(--lm-c-text-primary);
+}
+
+.lm-office table td {
+    border: 1px solid var(--lm-c-divider);
+    padding: 4px 10px;
+    vertical-align: top;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+.lm-office table tr:nth-child(even) td {
+    background: color-mix(in srgb, var(--lm-c-brand-subtle) 55%, transparent);
+}
+
+.lm-office__note {
+    font-size: 12px;
+    color: var(--lm-c-text-muted);
+    margin: 0 4px;
+}
+
+/* docx：白纸阅读面板（深浅主题统一，保证文档自身配色可读） */
+.lm-office__docx {
+    position: relative;
+    max-height: 380px;
+    overflow: auto;
+    background: #fff;
+    color: #111;
+    border: 1px solid var(--lm-c-border);
+    border-radius: var(--lm-radius-md);
+    box-shadow: var(--lm-shadow-glass);
+}
+
+.lm-office__busy {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    background: color-mix(in srgb, #fff 72%, transparent);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    border-radius: inherit;
+}
+
 /* ---------- KV 行 ---------- */
 .lm-kv {
     display: grid;
