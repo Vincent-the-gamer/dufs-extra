@@ -897,6 +897,11 @@
     padding: 20px;
 }
 
+/* 叠加在编辑器之上的确认框（如「放弃未保存修改」），保证可点击 */
+.lm-dialog-mask--above {
+    z-index: 80;
+}
+
 .lm-dialog {
     width: min(420px, 92vw);
     border-radius: var(--lm-radius-lg);
@@ -906,6 +911,22 @@
 
 .lm-dialog--wide {
     width: min(760px, 94vw);
+}
+
+/* 文本编辑器：放大为接近全屏的窗口（对齐 .lm-full 的全屏 Office 预览尺寸），
+   textarea 纵向铺满，方便查看/编辑长文本 */
+.lm-dialog--editor {
+    width: min(1720px, 96vw);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 18px 20px 20px;
+}
+
+.lm-dialog--editor .lm-textarea {
+    flex: 1 1 auto;
+    min-height: 0;
+    resize: none;
 }
 
 .lm-dialog__title {

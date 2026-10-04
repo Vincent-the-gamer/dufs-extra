@@ -9,24 +9,24 @@
     "dep": "taze major -I"
   },
   "dependencies": {
-    "docx-preview": "^0.4.0",
+    "docx-preview": "^0.4.1",
     "jsmediatags": "^3.9.7",
-    "marked": "^18.0.11",
+    "marked": "^18.0.14",
     "marked-highlight": "^2.2.4",
     "prismjs": "^1.30.0",
-    "vue": "^3.5.42",
+    "vue": "^3.5.43",
     "vue-router": "^5.3.1",
     "word-extractor": "^1.0.4",
     "xlsx": "0.18.5"
   },
   "devDependencies": {
-    "@types/node": "^26.4.1",
+    "@types/node": "^26.6.4",
     "@types/prismjs": "^1.26.6",
-    "@vitejs/plugin-vue": "^6.0.8",
+    "@vitejs/plugin-vue": "^6.0.9",
     "@vue/tsconfig": "^0.9.1",
-    "taze": "^21.1.0",
+    "taze": "^21.3.0",
     "typescript": "^7.0.2",
-    "vite": "^8.2.2",
-    "vue-tsc": "^3.3.11"
+    "vite": "^8.3.2",
+    "vue-tsc": "^3.3.12"
   }
 }
