@@ -23,7 +23,7 @@ const EXT_CATEGORY: Record<string, Category> = {
   txt: 'text', md: 'text', markdown: 'text', log: 'text', ini: 'text',
   cfg: 'text', conf: 'text', csv: 'text', tsv: 'text', license: 'text',
   // 代码
-  js: 'code', ts: 'code', tsx: 'code', jsx: 'code', json: 'code',
+  js: 'code', mjs: 'code', cjs: 'code', ts: 'code', tsx: 'code', jsx: 'code', json: 'code',
   html: 'code', css: 'code', scss: 'code', less: 'code',
   py: 'code', rb: 'code', go: 'code', rs: 'code', java: 'code',
   c: 'code', h: 'code', cpp: 'code', cxx: 'code', hpp: 'code',
@@ -80,12 +80,4 @@ export function iconNameOf(e: FileEntry): string {
     default:
       return 'file-text'
   }
-}
-
-// 全屏预览的文档格式：宽表格/整页文档在右侧抽屉里无法阅读，
-// 点击「预览」时改为铺满窗口（其余格式仍在抽屉内预览）
-const FULLSCREEN_DOC_EXTS = new Set(['doc', 'docx', 'xls', 'xlsx'])
-
-export function usesFullscreenPreview(e: FileEntry): boolean {
-  return !e.isDir && e.category === 'doc' && FULLSCREEN_DOC_EXTS.has(e.ext)
 }

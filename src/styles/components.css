@@ -822,68 +822,6 @@
     transition: width 0.2s var(--lm-ease);
 }
 
-/* ---------- 抽屉 ---------- */
-.lm-drawer-mask {
-    position: fixed;
-    inset: 0;
-    z-index: 55;
-    background: rgba(0, 0, 0, 0.36);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-}
-
-.lm-drawer {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 56;
-    width: min(480px, 92vw);
-    display: flex;
-    flex-direction: column;
-    border-left: 1px solid var(--lm-c-border-hover);
-}
-
-.lm-drawer__head {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 14px 16px;
-    border-bottom: 1px solid var(--lm-c-divider);
-    flex-shrink: 0;
-}
-
-.lm-drawer__title {
-    font-size: 15px;
-    font-weight: 800;
-    word-break: break-all;
-    min-width: 0;
-    flex: 1;
-}
-
-.lm-drawer__body {
-    flex: 1;
-    overflow-y: auto;
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.lm-drawer__foot {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 8px;
-    padding: 12px 16px;
-    border-top: 1px solid var(--lm-c-divider);
-    flex-shrink: 0;
-}
-
-.lm-drawer__foot .lm-more {
-    margin-left: auto;
-}
-
 /* ---------- 对话框 ---------- */
 .lm-dialog-mask {
     position: fixed;
@@ -1254,44 +1192,6 @@
     border-radius: inherit;
 }
 
-/* ---------- KV 行 ---------- */
-.lm-kv {
-    display: grid;
-    grid-template-columns: 84px 1fr;
-    gap: 6px 12px;
-    font-size: 13px;
-    margin: 0;
-}
-
-.lm-kv dt {
-    color: var(--lm-c-text-muted);
-    font-weight: 600;
-    padding-top: 1px;
-}
-
-.lm-kv dd {
-    margin: 0;
-    word-break: break-all;
-    color: var(--lm-c-text-primary);
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 6px;
-}
-
-.lm-kv__path {
-    font-family: var(--lm-font-mono);
-    font-size: 12px;
-    cursor: pointer;
-    border-radius: var(--lm-radius-xs);
-    padding: 1px 6px;
-    transition: background var(--lm-dur) var(--lm-ease);
-}
-
-.lm-kv__path:hover {
-    background: var(--lm-c-brand-subtle);
-}
-
 /* ---------- README ---------- */
 .lm-readme {
     border-radius: var(--lm-radius-lg);
@@ -1557,7 +1457,7 @@
     }
 }
 
-/* ---------- 全屏预览（.doc/.docx/.xls/.xlsx） ---------- */
+/* ---------- 全屏预览（所有文件类型统一入口） ---------- */
 .lm-full-root {
     position: fixed;
     inset: 0;
@@ -1616,8 +1516,33 @@
 .lm-full__body {
     flex: 1;
     min-height: 0;
-    overflow: auto;
+    overflow: hidden;
     padding: 18px 20px 24px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 预览内容铺满 body 可用高度，超出部分各自内部滚动 */
+.lm-full__body > .lm-preview {
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+.lm-full__body .lm-preview__img-wrap,
+.lm-full__body .lm-preview__media,
+.lm-full__body .lm-office {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: auto;
+}
+
+.lm-full .lm-preview__media {
+    justify-content: center;
+}
+
+.lm-full .lm-preview__video,
+.lm-full .lm-preview__img {
+    max-height: 100%;
 }
 
 /* 整页阅读型（doc/docx）：限宽居中，避免被拉得过宽 */
@@ -1635,8 +1560,75 @@
     max-height: none;
 }
 
+.lm-full .lm-preview__img {
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: 100%;
+}
+
+.lm-full .lm-preview__text {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+}
+
 .lm-full .lm-preview__frame {
-    height: calc(100dvh - 150px);
+    flex: 1 1 auto;
+    min-height: 0;
+    height: auto;
+}
+
+/* 全屏底部：信息 + 操作按钮 */
+.lm-full__foot {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    padding: 12px 20px;
+    border-top: 1px solid var(--lm-c-divider);
+}
+
+.lm-full__meta {
+    flex: 1 1 360px;
+    min-width: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 16px;
+    font-size: 12.5px;
+    color: var(--lm-c-text-secondary);
+}
+
+.lm-full__meta > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    min-width: 0;
+}
+
+.lm-full__meta b {
+    color: var(--lm-c-text-muted);
+    font-weight: 600;
+}
+
+.lm-full__path {
+    font-family: var(--lm-font-mono);
+    color: var(--lm-c-text-secondary);
+    cursor: pointer;
+    border-radius: var(--lm-radius-xs);
+    padding: 1px 6px;
+    transition: background var(--lm-dur) var(--lm-ease);
+}
+
+.lm-full__path:hover {
+    background: var(--lm-c-brand-subtle);
+}
+
+.lm-full__hash code {
+    font-family: var(--lm-font-mono);
+    font-size: 12px;
+    word-break: break-all;
 }
 
 /* 全屏读表：字号/单元格内边距略微放大 */
@@ -1697,16 +1689,6 @@
         opacity: 1;
         transform: none;
     }
-}
-
-.lm-drawer-enter-from,
-.lm-drawer-leave-to {
-    transform: translateX(100%);
-}
-
-.lm-drawer-enter-active,
-.lm-drawer-leave-active {
-    transition: transform 0.26s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .lm-slide-up-enter-from,

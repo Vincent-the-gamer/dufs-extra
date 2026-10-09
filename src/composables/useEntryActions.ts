@@ -2,10 +2,9 @@
 import { useRouter } from 'vue-router'
 import type { FileEntry } from '../api/types'
 import { buildUrl, genToken, getText, joinPath, move, putText, remove } from '../api/client'
-import { state, refresh, openEntry, openFull, prefix } from '../store'
+import { state, refresh, openFull, prefix } from '../store'
 import { t } from '../i18n'
 import { copyText, dirname, tokenExpiryMs } from '../utils/format'
-import { usesFullscreenPreview } from '../utils/filetype'
 import { confirmDialog, editDialog, promptDialog } from './useDialog'
 import { toastE, toastS } from './useToast'
 
@@ -22,30 +21,25 @@ export function useEntryActions() {
 
   const absUrl = (e: FileEntry) => window.location.origin + e.url
 
-  // 点击文件名/行/卡片：目录进入，文件则打开文件本身（新标签页）。
-  // dufs 对文件 GET 返回原内容，浏览器会按类型展示或下载，应用页保留在原标签。
+  // 点击文件名/行/卡片：目录进入；文件则打开预览（避免直接下载/新标签页的误触）。
+  // 需要查看原始文件时用「在浏览器新标签页打开」菜单项（openExternal）。
   function open(e: FileEntry): void {
     if (e.isDir) {
-      closeDrawerGuard(e)
       router.push(e.path)
     } else {
-      window.open(e.url, '_blank', 'noopener')
+      preview(e)
     }
   }
 
-  // 预览入口：Office 宽表格/整页文档（doc/docx/xls/xlsx）→ 全屏预览；
-  // 其余类型 → 右侧详情抽屉（需显式点击「预览」图标/菜单项才触发）
+  // 在浏览器新标签页打开文件本身（dufs 对文件 GET 返回原内容）
+  function openExternal(e: FileEntry): void {
+    window.open(e.url, '_blank', 'noopener')
+  }
+
+  // 预览入口：所有文件类型统一走全屏预览层
   function preview(e: FileEntry): void {
     if (e.isDir) return
-    if (usesFullscreenPreview(e)) openFull(e)
-    else openEntry(e)
-  }
-
-  function closeDrawerGuard(e: FileEntry): void {
-    if (state.drawerOpen && state.drawerEntry?.path === e.path) {
-      state.drawerOpen = false
-      state.drawerEntry = null
-    }
+    openFull(e)
   }
 
   function download(e: FileEntry): void {
@@ -191,7 +185,8 @@ export function useEntryActions() {
   async function handle(id: string, e: FileEntry): Promise<void> {
     switch (id) {
       case 'open':
-        open(e)
+        if (e.isDir) open(e)
+        else openExternal(e)
         break
       case 'preview':
         preview(e)
@@ -221,5 +216,5 @@ export function useEntryActions() {
     }
   }
 
-  return { open, preview, download, copyLink, copyToken, rename, moveTo, removeEntry, edit, menuItems, handle }
+  return { open, openExternal, preview, download, copyLink, copyToken, rename, moveTo, removeEntry, edit, menuItems, handle }
 }

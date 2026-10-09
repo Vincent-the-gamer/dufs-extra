@@ -38,6 +38,8 @@ import { markedHighlight } from 'marked-highlight'
 const LANG_ALIAS: Record<string, string> = {
   ts: 'typescript',
   js: 'javascript',
+  mjs: 'javascript',
+  cjs: 'javascript',
   jsx: 'jsx',
   tsx: 'tsx',
   py: 'python',

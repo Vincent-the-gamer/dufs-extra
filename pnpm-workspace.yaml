@@ -1,2 +1,4 @@
 packages:
   - "."
+minimumReleaseAgeExclude:
+  - vite@8.3.4

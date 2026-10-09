@@ -8,15 +8,16 @@ const promptVal = ref("");
 const editVal = ref("");
 const saving = ref(false);
 
-// 遮罩「点击外部」判定：只有当 mousedown 也发生在遮罩本体上时才算数。
-// 若在对话框内部按下（例如在文本框里拖选文字）、在遮罩上松开，浏览器会把 click
-// 派发到二者最近的公共祖先——也就是遮罩——若不区分就会误关闭并丢失编辑内容。
-const maskDown = { confirm: false, prompt: false, edit: false };
+// 遮罩「点击外部」判定：只有 mousedown 与 mouseup 都落在遮罩本体上，才算一次
+// 真正的点击外部。在文本框内按下拖选文字、把鼠标拖到遮罩上再松开时，浏览器会把
+// click 派发到二者最近的公共祖先（也就是遮罩），只看 click.target 会误关闭并
+// 丢失编辑内容；改为在 mouseup 时同时校验按下点与松开点，就只认「完整的遮罩点击」。
+const maskArmed = { confirm: false, prompt: false, edit: false };
 function markMaskDown(
     which: "confirm" | "prompt" | "edit",
     e: MouseEvent,
 ): void {
-    maskDown[which] = e.target === e.currentTarget;
+    maskArmed[which] = e.target === e.currentTarget;
 }
 
 const editDirty = computed(
@@ -45,7 +46,9 @@ function confirm(v: boolean): void {
 }
 
 function onConfirmMaskClick(): void {
-    if (maskDown.confirm) confirm(false);
+    const armed = maskArmed.confirm;
+    maskArmed.confirm = false;
+    if (armed) confirm(false);
 }
 
 function prompt(ok: boolean): void {
@@ -59,7 +62,9 @@ function prompt(ok: boolean): void {
 }
 
 function onPromptMaskClick(): void {
-    if (maskDown.prompt) prompt(false);
+    const armed = maskArmed.prompt;
+    maskArmed.prompt = false;
+    if (armed) prompt(false);
 }
 
 async function editSave(): Promise<void> {
@@ -93,7 +98,9 @@ async function editCancel(): Promise<void> {
 }
 
 function onEditMaskClick(): void {
-    if (maskDown.edit) void editCancel();
+    const armed = maskArmed.edit;
+    maskArmed.edit = false;
+    if (armed) void editCancel();
 }
 </script>
 
@@ -105,7 +112,7 @@ function onEditMaskClick(): void {
             class="lm-dialog-mask"
             :class="{ 'lm-dialog-mask--above': !!dialogs.edit }"
             @mousedown="markMaskDown('confirm', $event)"
-            @click.self="onConfirmMaskClick()"
+            @mouseup.self="onConfirmMaskClick()"
         >
             <div class="lm-dialog lm-glass--modal">
                 <div class="lm-dialog__title">{{ dialogs.confirm.title }}</div>
@@ -136,7 +143,7 @@ function onEditMaskClick(): void {
             v-if="dialogs.prompt"
             class="lm-dialog-mask"
             @mousedown="markMaskDown('prompt', $event)"
-            @click.self="onPromptMaskClick()"
+            @mouseup.self="onPromptMaskClick()"
         >
             <div class="lm-dialog lm-glass--modal">
                 <div class="lm-dialog__title">{{ dialogs.prompt.title }}</div>
@@ -169,7 +176,7 @@ function onEditMaskClick(): void {
             v-if="dialogs.edit"
             class="lm-dialog-mask"
             @mousedown="markMaskDown('edit', $event)"
-            @click.self="onEditMaskClick()"
+            @mouseup.self="onEditMaskClick()"
         >
             <div class="lm-dialog lm-dialog--editor lm-glass--modal">
                 <div class="lm-dialog__title">{{ dialogs.edit.title }}</div>

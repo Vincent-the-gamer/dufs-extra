@@ -4,7 +4,6 @@ import { config } from "./config";
 import { applyTheme } from "./composables/useTheme";
 import { renderMarkdown } from "./utils/highlight";
 import TopBar from "./components/TopBar.vue";
-import DetailDrawer from "./components/DetailDrawer.vue";
 import FullscreenPreview from "./components/FullscreenPreview.vue";
 import UploadOverlay from "./components/UploadOverlay.vue";
 import ToastHost from "./components/ToastHost.vue";
@@ -43,7 +42,6 @@ onMounted(() => {
             <div class="lm-markdown" v-html="footerHtml"></div>
         </footer>
 
-        <DetailDrawer />
         <FullscreenPreview />
         <UploadOverlay ref="overlay" />
         <ToastHost />
