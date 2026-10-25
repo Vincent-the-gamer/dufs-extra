@@ -154,7 +154,7 @@ function goNext(): void {
         <template v-else>
             <section v-if="showReadme" class="lm-glass lm-readme">
                 <div class="lm-readme__head">
-                    <SvgIcon name="file-text" :size="16" />
+                    <SvgIcon name="fileText" :size="16" />
                     <span>README.md</span>
                 </div>
                 <div class="lm-markdown" v-html="readmeHtml"></div>

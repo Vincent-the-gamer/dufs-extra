@@ -1,7 +1,7 @@
 {
   "name": "dufs-extra",
   "private": true,
-  "version": "0.1.2",
+  "version": "0.1.3",
   "type": "module",
   "license": "MIT",
   "scripts": {
@@ -11,22 +11,22 @@
   "dependencies": {
     "docx-preview": "^0.4.1",
     "jsmediatags": "^3.9.7",
-    "marked": "^18.1.0",
+    "marked": "^18.1.1",
     "marked-highlight": "^2.2.4",
     "prismjs": "^1.30.0",
-    "vue": "^3.5.43",
+    "vue": "^3.5.44",
     "vue-router": "^5.4.0",
     "word-extractor": "^1.0.4",
     "xlsx": "0.18.5"
   },
   "devDependencies": {
-    "@types/node": "^26.6.4",
+    "@types/node": "^26.6.5",
     "@types/prismjs": "^1.26.6",
-    "@vitejs/plugin-vue": "^6.0.9",
+    "@vitejs/plugin-vue": "^6.0.10",
     "@vue/tsconfig": "^0.9.1",
     "taze": "^21.3.0",
     "typescript": "^7.0.2",
     "vite": "^8.3.4",
-    "vue-tsc": "^3.3.12"
+    "vue-tsc": "^3.3.13"
   }
 }

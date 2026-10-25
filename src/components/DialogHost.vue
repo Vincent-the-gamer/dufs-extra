@@ -3,6 +3,7 @@ import { computed, ref, watch } from "vue";
 import { confirmDialog, dialogs } from "../composables/useDialog";
 import { toastE } from "../composables/useToast";
 import { t } from "../i18n";
+import CodeEditor from "./CodeEditor.vue";
 
 const promptVal = ref("");
 const editVal = ref("");
@@ -180,12 +181,7 @@ function onEditMaskClick(): void {
         >
             <div class="lm-dialog lm-dialog--editor lm-glass--modal">
                 <div class="lm-dialog__title">{{ dialogs.edit.title }}</div>
-                <textarea
-                    v-model="editVal"
-                    class="lm-textarea lm-input--block"
-                    rows="18"
-                    spellcheck="false"
-                ></textarea>
+                <CodeEditor v-model="editVal" :ext="dialogs.edit.ext" />
                 <div class="lm-dialog__actions">
                     <button
                         class="lm-btn"

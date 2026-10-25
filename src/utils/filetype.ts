@@ -62,8 +62,22 @@ export function categoryLabel(cat: Category): string {
   return t('cat.' + cat)
 }
 
+// 后缀专属图标（优先于类别图标的通用图标）
+const EXT_ICON: Record<string, string> = {
+  pdf: 'filePdf',
+  doc: 'fileWord', docx: 'fileWord', rtf: 'fileWord', odt: 'fileWord', pages: 'fileWord',
+  xls: 'fileSheet', xlsx: 'fileSheet', ods: 'fileSheet', numbers: 'fileSheet',
+  csv: 'fileSheet', tsv: 'fileSheet',
+  ppt: 'fileSlide', pptx: 'fileSlide', odp: 'fileSlide', key: 'fileSlide',
+  srt: 'captions', vtt: 'captions', ass: 'captions', ssa: 'captions',
+  md: 'fileText', markdown: 'fileText',
+  drawio: 'fileCode',
+}
+
 export function iconNameOf(e: FileEntry): string {
   if (e.isDir) return 'folder'
+  const specific = EXT_ICON[e.ext]
+  if (specific) return specific
   switch (e.category) {
     case 'image':
       return 'image'
@@ -76,8 +90,12 @@ export function iconNameOf(e: FileEntry): string {
     case 'font':
       return 'type'
     case 'code':
-      return 'file-code'
+      return 'fileCode'
+    case 'pdf':
+      return 'filePdf'
+    case 'doc':
+      return 'fileWord'
     default:
-      return 'file-text'
+      return 'fileText'
   }
 }

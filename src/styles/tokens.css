@@ -10,6 +10,8 @@
   --lm-c-brand-subtle: color-mix(in srgb, var(--lm-c-brand) 10%, transparent);
   --lm-c-brand-border: color-mix(in srgb, var(--lm-c-brand) 44%, #fff);
   --lm-c-brand-soft: color-mix(in srgb, var(--lm-c-brand) 14%, #fff);
+  /* 品牌色底上的文字（#66CCFF 是浅色，必须用深墨色，白字对比度不足） */
+  --lm-c-on-brand: #062431;
 
   /* 文字 */
   --lm-c-text-primary: #111111;

@@ -19,6 +19,8 @@ export interface PromptReq {
 export interface EditReq {
   title: string
   text: string
+  /** 文件后缀（用于编辑器的语法高亮） */
+  ext?: string
   save: (text: string) => Promise<boolean>
 }
 

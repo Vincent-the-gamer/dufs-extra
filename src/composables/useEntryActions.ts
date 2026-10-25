@@ -134,6 +134,7 @@ export function useEntryActions() {
     const saved = await editDialog({
       title: t('edit.title', { name: e.name }),
       text,
+      ext: e.ext,
       save: async (v) => {
         try {
           await putText(e.url, v)

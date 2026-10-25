@@ -82,6 +82,9 @@ async function newFile(): Promise<void> {
     const saved = await editDialog({
         title: t("edit.title", { name }),
         text: "",
+        ext: name.includes(".")
+            ? (name.split(".").pop() ?? "").toLowerCase()
+            : "",
         save: async (v) => {
             try {
                 await putText(url, v);

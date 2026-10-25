@@ -24,13 +24,13 @@ function open(): void {
     acts.open(props.entry);
 }
 
-function thumbKind(): "image" | "video" | "icon" {
-    if (imgFail.value) return "icon";
-    if (props.entry.category === "image" && props.entry.ext !== "jxl")
-        return "image";
-    if (props.entry.category === "video") return "video";
-    return "icon";
-}
+// 网格视图：仅图片后缀展示预览图（视频取首帧不可靠，其余一律展示文件图标）
+const showThumb = computed(
+    () =>
+        !imgFail.value &&
+        props.entry.category === "image" &&
+        props.entry.ext !== "jxl",
+);
 </script>
 
 <template>
@@ -43,7 +43,7 @@ function thumbKind(): "image" | "video" | "icon" {
     >
         <div class="lm-card__thumb">
             <img
-                v-if="thumbKind() === 'image'"
+                v-if="showThumb"
                 :src="entry.url"
                 loading="lazy"
                 decoding="async"
@@ -51,15 +51,6 @@ function thumbKind(): "image" | "video" | "icon" {
                 alt=""
                 @error="imgFail = true"
             />
-            <video
-                v-else-if="thumbKind() === 'video'"
-                :src="entry.url"
-                preload="metadata"
-                muted
-                playsinline
-                class="lm-card__img"
-                @error="imgFail = true"
-            ></video>
             <div v-else class="lm-card__icon">
                 <SvgIcon :name="iconNameOf(entry)" :size="44" />
             </div>
