@@ -50,3 +50,11 @@ export const MAX_PREVIEW_BYTES = 5 * 1024 * 1024
 export const MAX_OFFICE_BYTES = 100 * 1024 * 1024
 export const MAX_AUDIO_META_BYTES = 100 * 1024 * 1024
 export const UPLOAD_CONCURRENCY = 5
+
+// 传输分块与重试：分块让失败后只需续传剩余部分，重试上限避免无限重连
+export const UPLOAD_CHUNK_SIZE = 8 * 1024 * 1024
+export const UPLOAD_MAX_RETRIES = 5
+export const DOWNLOAD_CHUNK_SIZE = 8 * 1024 * 1024
+export const DOWNLOAD_MAX_RETRIES = 5
+// 超过该大小的下载写入磁盘（File System Access），避免整文件驻留内存
+export const DOWNLOAD_DISK_THRESHOLD = 512 * 1024 * 1024

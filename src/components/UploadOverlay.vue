@@ -7,7 +7,7 @@ import { formatSize } from "../utils/format";
 import { t } from "../i18n";
 import SvgIcon from "./SvgIcon.vue";
 
-const { items, busy, push, reset } = useUpload(
+const { items, busy, push, retry, reset } = useUpload(
     () => prefix.value,
     () => state.path,
     refresh,
@@ -135,10 +135,25 @@ defineExpose({ openPicker });
                                 ></i>
                             </div>
                             <div
-                                v-if="it.status === 'error' && it.error"
-                                class="lm-sm lm-c-danger"
+                                v-if="it.status === 'uploading' && it.attempt"
+                                class="lm-sm lm-muted"
                             >
-                                {{ it.error }}
+                                {{ t("upload.resuming", { n: it.attempt }) }}
+                            </div>
+                            <div
+                                v-if="it.status === 'error'"
+                                class="lm-upload__error"
+                            >
+                                <span class="lm-sm lm-c-danger">{{
+                                    it.error
+                                }}</span>
+                                <button
+                                    class="lm-btn lm-btn--icon lm-btn--sm"
+                                    :title="t('retry')"
+                                    @click="retry(it)"
+                                >
+                                    <SvgIcon name="refresh" :size="14" />
+                                </button>
                             </div>
                         </div>
                     </div>

@@ -1,4 +1,4 @@
-// 上传队列：并发信号量 + 逐文件进度 + 文件夹递归采集
+// 上传队列：并发信号量 + 逐文件进度 + 断点续传 + 文件夹递归采集
 import { computed, reactive, ref } from 'vue'
 import { buildUrl, joinPath, upload } from '../api/client'
 import { UPLOAD_CONCURRENCY } from '../config'
@@ -13,6 +13,8 @@ export interface UploadItem {
   progress: number
   status: UploadStatus
   error?: string
+  /** 当前自动重试次数（0 表示未在续传） */
+  attempt: number
 }
 
 export interface UploadSource {
@@ -26,7 +28,10 @@ const MAX_FILES = 5000
 export function useUpload(getPrefix: () => string, getDir: () => string, onSettled?: () => void) {
   const items = ref<UploadItem[]>([])
   const active = ref(0)
-  const queue: { item: UploadItem; file: File }[] = []
+  const queue: { item: UploadItem; file: File; resume: boolean }[] = []
+  // File 与断点进度不放进响应式对象，避免被 Proxy 包裹
+  const files = new Map<number, File>()
+  const confirmed = new Map<number, number>()
 
   const busy = computed(() => items.value.some((x) => x.status === 'pending' || x.status === 'uploading'))
 
@@ -44,27 +49,44 @@ export function useUpload(getPrefix: () => string, getDir: () => string, onSettl
         size: s.file.size,
         progress: 0,
         status: 'pending',
+        attempt: 0,
       })
       items.value.push(item)
-      queue.push({ item, file: s.file })
+      files.set(item.id, s.file)
+      queue.push({ item, file: s.file, resume: false })
     }
     pump()
   }
 
   function pump(): void {
     while (active.value < UPLOAD_CONCURRENCY && queue.length) {
-      const { item, file } = queue.shift()!
+      const { item, file, resume } = queue.shift()!
       active.value++
       item.status = 'uploading'
-      upload(item.url, file, (p) => {
-        item.progress = p
+      item.error = undefined
+      upload(item.url, file, {
+        resumeFrom: resume ? (confirmed.get(item.id) ?? 0) : 0,
+        onProgress: (loaded) => {
+          item.progress = item.size ? Math.min(1, loaded / item.size) : 1
+        },
+        onRetry: (attempt) => {
+          item.attempt = attempt
+        },
+        onConfirmed: (offset) => {
+          confirmed.set(item.id, offset)
+          item.attempt = 0
+        },
       })
         .then(() => {
           item.status = 'done'
           item.progress = 1
+          item.attempt = 0
+          files.delete(item.id)
+          confirmed.delete(item.id)
         })
         .catch((e) => {
           item.status = 'error'
+          item.attempt = 0
           item.error = (e as Error)?.message ?? ''
         })
         .finally(() => {
@@ -77,12 +99,25 @@ export function useUpload(getPrefix: () => string, getDir: () => string, onSettl
     }
   }
 
+  // 手动重试：从上次服务端确认的偏移继续，无需整文件重传
+  function retry(item: UploadItem): void {
+    const file = files.get(item.id)
+    if (!file || item.status !== 'error') return
+    item.status = 'pending'
+    item.error = undefined
+    item.attempt = 0
+    queue.push({ item, file, resume: true })
+    pump()
+  }
+
   function reset(): void {
     queue.length = 0
     items.value = []
+    files.clear()
+    confirmed.clear()
   }
 
-  return { items, busy, push, reset }
+  return { items, busy, push, retry, reset }
 }
 
 // 从 DataTransfer 递归采集文件（含文件夹）

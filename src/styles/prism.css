@@ -1,77 +1,95 @@
-/* ============ Prism 主题（lolimeow 柔和配色） ============ */
-code[class*='language-'],
-pre[class*='language-'] {
-  font-family: var(--lm-font-mono);
-  font-size: 13px;
-  line-height: 1.7;
-  color: var(--lm-c-text-primary);
-  text-shadow: none;
-  tab-size: 2;
+/* ============ Prism 主题（lolimeow 柔和配色） ============
+   颜色全部走 tokens.css 的 --lm-c-syn-* 令牌，
+   浅色 / 深色主题各有一套，避免高饱和撞色。 */
+
+code[class*="language-"],
+pre[class*="language-"] {
+    font-family: var(--lm-font-mono);
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--lm-c-text-primary);
+    text-shadow: none;
+    tab-size: 2;
 }
 
+/* 注释：收敛为灰调斜体，不抢视线 */
 .token.comment,
 .token.prolog,
 .token.doctype,
 .token.cdata {
-  color: var(--lm-c-text-muted);
-  font-style: italic;
+    color: var(--lm-c-syn-comment);
+    font-style: italic;
 }
 
 .token.punctuation {
-  color: var(--lm-c-text-secondary);
+    color: var(--lm-c-syn-punctuation);
 }
 
+/* 键名 / 标签 / 选择器：结构性的“名字” */
 .token.property,
 .token.tag,
-.token.constant,
-.token.symbol,
-.token.deleted {
-  color: #f472b6;
+.token.selector,
+.token.attr-name {
+    color: var(--lm-c-syn-key);
+}
+
+/* 类型名、TOML 表头等 */
+.token.class-name {
+    color: var(--lm-c-syn-class);
 }
 
 .token.boolean,
-.token.number {
-  color: #f59e0b;
+.token.number,
+.token.constant,
+.token.symbol {
+    color: var(--lm-c-syn-number);
 }
 
-.token.selector,
-.token.attr-name,
 .token.string,
 .token.char,
 .token.builtin,
+.token.attr-value {
+    color: var(--lm-c-syn-string);
+}
+
+/* diff 增删行 */
 .token.inserted {
-  color: #34d399;
+    color: var(--lm-c-syn-inserted);
+}
+
+.token.deleted {
+    color: var(--lm-c-syn-deleted);
 }
 
 .token.operator,
 .token.entity,
-.token.url,
-.language-css .token.string,
-.style .token.string {
-  color: #38bdf8;
+.token.url {
+    color: var(--lm-c-syn-operator);
 }
 
 .token.atrule,
-.token.attr-value,
 .token.keyword {
-  color: #a78bfa;
+    color: var(--lm-c-syn-keyword);
 }
 
-.token.function,
-.token.class-name {
-  color: #60a5fa;
+.token.function {
+    color: var(--lm-c-syn-function);
 }
 
 .token.regex,
-.token.important,
 .token.variable {
-  color: #fbbf24;
+    color: var(--lm-c-syn-variable);
+}
+
+.token.important {
+    color: var(--lm-c-syn-variable);
+    font-weight: 700;
 }
 
 .token.bold {
-  font-weight: 700;
+    font-weight: 700;
 }
 
 .token.italic {
-  font-style: italic;
+    font-style: italic;
 }

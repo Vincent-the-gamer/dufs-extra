@@ -1037,20 +1037,37 @@
     font-weight: 700;
 }
 
-.lm-upload {
+/* 传输浮层：下载在上、上传在下，共用一个右下角停靠点 */
+.lm-transfer-dock {
     position: fixed;
-    bottom: 20px;
     right: 20px;
+    bottom: 20px;
     z-index: 50;
     width: min(360px, calc(100vw - 40px));
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    pointer-events: none;
+}
+
+/* 两个浮层组件的根节点只作占位，让面板直接参与停靠点的 flex 布局 */
+.lm-transfer-dock > * {
+    display: contents;
+}
+
+.lm-upload,
+.lm-download {
+    width: 100%;
     max-height: 44vh;
     display: flex;
     flex-direction: column;
     border-radius: var(--lm-radius-lg);
     padding: 12px;
+    pointer-events: auto;
 }
 
-.lm-upload__head {
+.lm-upload__head,
+.lm-download__head {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -1059,33 +1076,39 @@
     margin-bottom: 8px;
 }
 
-.lm-upload__list {
+.lm-upload__list,
+.lm-download__list {
     overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
 
-.lm-upload__item {
+.lm-upload__item,
+.lm-download__item {
     display: flex;
     gap: 10px;
     align-items: flex-start;
 }
 
-.lm-upload__icon {
+.lm-upload__icon,
+.lm-download__icon {
     margin-top: 2px;
     flex-shrink: 0;
 }
 
-.lm-upload__icon--done {
+.lm-upload__icon--done,
+.lm-download__icon--done {
     color: var(--lm-c-success);
 }
 
-.lm-upload__icon--error {
+.lm-upload__icon--error,
+.lm-download__icon--error {
     color: var(--lm-c-danger);
 }
 
-.lm-upload__main {
+.lm-upload__main,
+.lm-download__main {
     flex: 1;
     min-width: 0;
     display: flex;
@@ -1093,11 +1116,26 @@
     gap: 4px;
 }
 
-.lm-upload__name {
+.lm-upload__name,
+.lm-download__name {
     font-size: 12.5px;
     font-weight: 600;
     word-break: break-all;
     line-height: 1.4;
+}
+
+.lm-upload__error {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.lm-download__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
 }
 
 /* ---------- 详情抽屉内的预览 ---------- */

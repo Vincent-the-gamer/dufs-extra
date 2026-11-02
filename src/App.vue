@@ -6,6 +6,7 @@ import { renderMarkdown } from "./utils/highlight";
 import TopBar from "./components/TopBar.vue";
 import FullscreenPreview from "./components/FullscreenPreview.vue";
 import UploadOverlay from "./components/UploadOverlay.vue";
+import DownloadOverlay from "./components/DownloadOverlay.vue";
 import ToastHost from "./components/ToastHost.vue";
 import DialogHost from "./components/DialogHost.vue";
 import CatPawButton from "./components/CatPawButton.vue";
@@ -43,7 +44,10 @@ onMounted(() => {
         </footer>
 
         <FullscreenPreview />
-        <UploadOverlay ref="overlay" />
+        <div class="lm-transfer-dock">
+            <DownloadOverlay />
+            <UploadOverlay ref="overlay" />
+        </div>
         <ToastHost />
         <DialogHost />
         <CatPawButton v-if="decorations" />

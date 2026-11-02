@@ -6,6 +6,7 @@ import { state, refresh, openFull, prefix } from '../store'
 import { t } from '../i18n'
 import { copyText, dirname, tokenExpiryMs } from '../utils/format'
 import { confirmDialog, editDialog, promptDialog } from './useDialog'
+import { downloadEntry } from './useDownload'
 import { toastE, toastS } from './useToast'
 
 export interface MenuItem {
@@ -42,14 +43,9 @@ export function useEntryActions() {
     openFull(e)
   }
 
+  // 文件下载走 Range 分块 + 断点续传；目录仍由 dufs 打包成 zip
   function download(e: FileEntry): void {
-    const a = document.createElement('a')
-    a.href = e.isDir ? e.url + '?zip' : e.url
-    a.download = e.name
-    a.style.display = 'none'
-    document.body.appendChild(a)
-    a.click()
-    a.remove()
+    downloadEntry(e)
   }
 
   async function copyLink(e: FileEntry): Promise<void> {
