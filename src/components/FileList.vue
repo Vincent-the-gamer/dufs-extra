@@ -175,7 +175,10 @@ function goNext(): void {
                 <p>{{ state.search ? t("search.empty") : t("empty") }}</p>
             </div>
 
-            <div v-if="entries.length > MIN_PAGE_SIZE" class="lm-pagination">
+            <div
+                v-if="entries.length > MIN_PAGE_SIZE"
+                class="lm-pagination lm-glass"
+            >
                 <span class="lm-pagination__count">{{
                     t("page.total", { n: entries.length })
                 }}</span>

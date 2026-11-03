@@ -4,6 +4,7 @@ import { confirmDialog, dialogs } from "../composables/useDialog";
 import { toastE } from "../composables/useToast";
 import { t } from "../i18n";
 import CodeEditor from "./CodeEditor.vue";
+import MoveDialog from "./MoveDialog.vue";
 
 const promptVal = ref("");
 const editVal = ref("");
@@ -103,6 +104,12 @@ function onEditMaskClick(): void {
     maskArmed.edit = false;
     if (armed) void editCancel();
 }
+
+// 移动目标选择：选中目录后移动，取消返回 null
+function pickMove(dir: string | null): void {
+    dialogs.move?.resolve(dir);
+    dialogs.move = null;
+}
 </script>
 
 <template>
@@ -200,5 +207,8 @@ function onEditMaskClick(): void {
                 </div>
             </div>
         </div>
+
+        <!-- 移动目标选择 -->
+        <MoveDialog v-if="dialogs.move" :req="dialogs.move" @pick="pickMove" />
     </Teleport>
 </template>

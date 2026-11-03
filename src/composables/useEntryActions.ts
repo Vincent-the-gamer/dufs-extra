@@ -5,7 +5,8 @@ import { buildUrl, genToken, getText, joinPath, move, putText, remove } from '..
 import { state, refresh, openFull, prefix } from '../store'
 import { t } from '../i18n'
 import { copyText, dirname, tokenExpiryMs } from '../utils/format'
-import { confirmDialog, editDialog, promptDialog } from './useDialog'
+import { confirmDialog, editDialog, moveDialog, promptDialog } from './useDialog'
+import { moveInto } from './useDragMove'
 import { downloadEntry } from './useDownload'
 import { toastE, toastS } from './useToast'
 
@@ -83,23 +84,16 @@ export function useEntryActions() {
     }
   }
 
+  // 移动：可视化选择目标文件夹（拖拽到文件夹是另一条快捷路径）
   async function moveTo(e: FileEntry): Promise<void> {
-    const target = await promptDialog({
-      title: t('move'),
-      label: t('dialog.moveTarget'),
-      placeholder: t('dialog.moveHint'),
+    const target = await moveDialog({
+      name: e.name,
+      fromPath: e.path,
+      isDir: e.isDir,
+      startPath: state.path,
     })
-    if (target == null || !target.trim()) return
-    const destPath = target.trim().startsWith('/')
-      ? target.trim()
-      : joinPath(dirname(e.path), target.trim())
-    try {
-      await move(e.url, buildUrl(prefix.value, destPath))
-      toastS(t('moved'))
-      refresh()
-    } catch {
-      toastE(t('failed'))
-    }
+    if (!target) return
+    await moveInto(e, target)
   }
 
   async function removeEntry(e: FileEntry): Promise<void> {

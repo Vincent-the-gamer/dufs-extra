@@ -135,6 +135,7 @@ export const icons: Record<string, IconDef> = {
   chevronRight: [poly('9 18 15 12 9 6')],
   chevronLeft: [poly('15 18 9 12 15 6')],
   chevronDown: [poly('6 9 12 15 18 9')],
+  arrowUp: [l(12, 19, 12, 5), poly('5 12 12 5 19 12')],
   refresh: [p('M21 12a9 9 0 1 1-2.64-6.36L21 8'), poly('21 3 21 8 16 8')],
   login: [p('M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4'), poly('10 17 15 12 10 7'), l(15, 12, 3, 12)],
   logout: [p('M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4'), poly('16 17 21 12 16 7'), l(21, 12, 9, 12)],

@@ -575,6 +575,37 @@
     color: var(--lm-c-text-primary);
 }
 
+/* ---------- 拖拽移动 ---------- */
+/* 拖动中的源条目 */
+.is-dragging {
+    opacity: 0.45;
+}
+
+/* 表格行作为落点 */
+.lm-table tbody tr.is-drop-target td {
+    background: var(--lm-c-brand-soft);
+}
+
+.lm-table tbody tr.is-drop-target td:first-child {
+    box-shadow: inset 3px 0 0 var(--lm-c-brand);
+}
+
+/* 卡片作为落点 */
+.lm-card.is-drop-target {
+    border-color: var(--lm-c-brand);
+    box-shadow:
+        0 0 0 2px var(--lm-c-brand-subtle),
+        var(--lm-shadow-elevated);
+    transform: translateY(-2px);
+}
+
+/* 面包屑作为落点（向上层目录移动） */
+.lm-breadcrumb .is-drop-target {
+    background: var(--lm-c-brand-soft);
+    box-shadow: inset 0 0 0 1.5px var(--lm-c-brand);
+    color: var(--lm-c-brand-strong);
+}
+
 /* ---------- 顶栏 ---------- */
 .lm-topbar {
     position: sticky;
@@ -788,7 +819,11 @@
     align-items: center;
     justify-content: center;
     gap: 10px;
-    padding: 20px 0 4px;
+    width: fit-content;
+    max-width: 100%;
+    margin: 20px auto 4px;
+    padding: 8px 16px;
+    border-radius: var(--lm-radius-full);
     font-size: 13px;
     color: var(--lm-c-text-secondary);
 }
@@ -969,6 +1004,158 @@
     justify-content: flex-end;
     gap: 8px;
     margin-top: 18px;
+}
+
+/* ---------- 移动目标选择 ---------- */
+.lm-dialog--move {
+    width: min(520px, 94vw);
+    display: flex;
+    flex-direction: column;
+}
+
+.lm-movedlg__bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 6px;
+    border-radius: var(--lm-radius-full);
+    background: var(--lm-c-bg-glass);
+    border: 1px solid var(--lm-c-border);
+}
+
+.lm-movedlg__bar .lm-btn:disabled {
+    opacity: 0.4;
+    cursor: default;
+}
+
+.lm-movedlg__crumbs {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.lm-movedlg__crumbs::-webkit-scrollbar {
+    display: none;
+}
+
+.lm-movedlg__sep {
+    color: var(--lm-c-text-muted);
+    flex-shrink: 0;
+}
+
+.lm-movedlg__crumb {
+    border: none;
+    background: transparent;
+    padding: 3px 8px;
+    border-radius: var(--lm-radius-full);
+    font-size: 12.5px;
+    color: var(--lm-c-text-secondary);
+    cursor: pointer;
+    white-space: nowrap;
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: background var(--lm-dur) var(--lm-ease);
+}
+
+.lm-movedlg__crumb:hover {
+    background: var(--lm-c-brand-subtle);
+    color: var(--lm-c-brand-strong);
+}
+
+.lm-movedlg__crumb.is-cur {
+    color: var(--lm-c-text-primary);
+    font-weight: 700;
+}
+
+.lm-movedlg__list {
+    margin-top: 10px;
+    min-height: 200px;
+    max-height: min(46vh, 380px);
+    overflow-y: auto;
+    border: 1px solid var(--lm-c-border);
+    border-radius: var(--lm-radius-md);
+    background: var(--lm-c-bg-glass);
+    padding: 6px;
+}
+
+.lm-movedlg__state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 60px 12px;
+    font-size: 13px;
+    text-align: center;
+}
+
+.lm-movedlg__row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    border-radius: var(--lm-radius-sm);
+    transition: background var(--lm-dur) var(--lm-ease);
+}
+
+.lm-movedlg__row:hover {
+    background: var(--lm-c-brand-subtle);
+}
+
+.lm-movedlg__enter {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 8px 10px;
+    border: none;
+    background: transparent;
+    border-radius: var(--lm-radius-sm);
+    color: var(--lm-c-text-primary);
+    font-size: 13.5px;
+    text-align: left;
+    cursor: pointer;
+}
+
+.lm-movedlg__enter span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.lm-movedlg__enter svg {
+    color: var(--lm-c-brand-strong);
+    flex-shrink: 0;
+}
+
+.lm-movedlg__target {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 10px;
+    padding: 8px 12px;
+    border-radius: var(--lm-radius-sm);
+    background: var(--lm-c-brand-subtle);
+    color: var(--lm-c-brand-strong);
+    font-size: 12.5px;
+    min-width: 0;
+}
+
+.lm-movedlg__target-path {
+    font-family: var(--lm-font-mono);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.lm-movedlg__hint {
+    margin-left: auto;
+    color: var(--lm-c-danger);
+    font-size: 12px;
+    flex-shrink: 0;
 }
 
 /* ---------- Toast ---------- */

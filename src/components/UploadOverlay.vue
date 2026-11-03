@@ -2,6 +2,7 @@
 import { onBeforeUnmount, onMounted, ref } from "vue";
 import { prefix, refresh, state } from "../store";
 import { collectFilesFromDrop, useUpload } from "../composables/useUpload";
+import { isInternalDrag } from "../composables/useDragMove";
 import { toastE } from "../composables/useToast";
 import { formatSize } from "../utils/format";
 import { t } from "../i18n";
@@ -18,12 +19,15 @@ const picker = ref<HTMLInputElement>();
 let dragDepth = 0;
 
 function onDragEnter(e: DragEvent): void {
+    // 页面内的条目拖拽（移动到文件夹）不触发上传蒙层
+    if (isInternalDrag(e)) return;
     e.preventDefault();
     dragDepth++;
     dragging.value = true;
 }
 
 function onDragLeave(e: DragEvent): void {
+    if (isInternalDrag(e)) return;
     e.preventDefault();
     dragDepth = Math.max(0, dragDepth - 1);
     if (dragDepth === 0) dragging.value = false;
@@ -34,6 +38,7 @@ function prevent(e: Event): void {
 }
 
 async function onDrop(e: DragEvent): Promise<void> {
+    if (isInternalDrag(e)) return;
     e.preventDefault();
     dragDepth = 0;
     dragging.value = false;

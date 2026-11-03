@@ -2,3 +2,4 @@ packages:
   - "."
 minimumReleaseAgeExclude:
   - vite@8.3.4
+  - marked@18.1.3

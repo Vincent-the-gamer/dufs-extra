@@ -5,12 +5,23 @@ import { t } from "../i18n";
 import { formatDate, formatSize } from "../utils/format";
 import { iconNameOf } from "../utils/filetype";
 import { useEntryActions } from "../composables/useEntryActions";
+import { useDragMove } from "../composables/useDragMove";
 import SvgIcon from "./SvgIcon.vue";
 import MoreMenu from "./MoreMenu.vue";
 
 defineProps<{ entries: FileEntry[] }>();
 
 const acts = useEntryActions();
+const {
+    canDrag,
+    draggingPath,
+    dropTargetPath,
+    onDragStart,
+    onDragEnd,
+    onDragOver,
+    onDragLeave,
+    onDrop,
+} = useDragMove();
 
 function arrow(k: "name" | "mtime" | "size"): string {
     if (state.sortKey !== k) return "";
@@ -45,7 +56,21 @@ function arrow(k: "name" | "mtime" | "size"): string {
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="e in entries" :key="e.path" @click="acts.open(e)">
+                <tr
+                    v-for="e in entries"
+                    :key="e.path"
+                    :draggable="canDrag"
+                    :class="{
+                        'is-dragging': draggingPath === e.path,
+                        'is-drop-target': dropTargetPath === e.path,
+                    }"
+                    @click="acts.open(e)"
+                    @dragstart="onDragStart($event, e)"
+                    @dragend="onDragEnd()"
+                    @dragover="e.isDir && onDragOver($event, e.path)"
+                    @dragleave="e.isDir && onDragLeave($event, e.path)"
+                    @drop="e.isDir && onDrop($event, e.path)"
+                >
                     <td>
                         <span class="lm-cell-name">
                             <span class="lm-ic" :class="`lm-cat-${e.category}`">

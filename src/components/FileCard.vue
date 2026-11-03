@@ -5,6 +5,7 @@ import { t } from "../i18n";
 import { formatDate, formatSize } from "../utils/format";
 import { iconNameOf } from "../utils/filetype";
 import { useEntryActions } from "../composables/useEntryActions";
+import { useDragMove } from "../composables/useDragMove";
 import SvgIcon from "./SvgIcon.vue";
 import MoreMenu from "./MoreMenu.vue";
 import type { MoreItem } from "./MoreMenu.vue";
@@ -12,6 +13,16 @@ import type { MoreItem } from "./MoreMenu.vue";
 const props = defineProps<{ entry: FileEntry }>();
 
 const acts = useEntryActions();
+const {
+    canDrag,
+    draggingPath,
+    dropTargetPath,
+    onDragStart,
+    onDragEnd,
+    onDragOver,
+    onDragLeave,
+    onDrop,
+} = useDragMove();
 const imgFail = ref(false);
 
 const menuItems = computed<MoreItem[]>(() => acts.menuItems(props.entry));
@@ -36,9 +47,21 @@ const showThumb = computed(
 <template>
     <div
         class="lm-card"
-        :class="`lm-cat-${entry.category}`"
+        :class="[
+            `lm-cat-${entry.category}`,
+            {
+                'is-dragging': draggingPath === entry.path,
+                'is-drop-target': dropTargetPath === entry.path,
+            },
+        ]"
+        :draggable="canDrag"
         @click="open()"
         @keydown.enter="open()"
+        @dragstart="onDragStart($event, entry)"
+        @dragend="onDragEnd()"
+        @dragover="entry.isDir && onDragOver($event, entry.path)"
+        @dragleave="entry.isDir && onDragLeave($event, entry.path)"
+        @drop="entry.isDir && onDrop($event, entry.path)"
         tabindex="0"
     >
         <div class="lm-card__thumb">
@@ -49,6 +72,7 @@ const showThumb = computed(
                 decoding="async"
                 class="lm-card__img"
                 alt=""
+                draggable="false"
                 @error="imgFail = true"
             />
             <div v-else class="lm-card__icon">
